@@ -1,0 +1,11 @@
+name = "ktpl10-hoi-dap"
+compatibility_date = "2026-11-22"
+pages_build_output_dir = "./public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ktpl10-hoi-dap"
+database_id = "THAY_DATABASE_ID_SAU_KHI_TAO_D1"
+
+[ai]
+binding = "AI"
