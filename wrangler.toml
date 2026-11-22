@@ -5,7 +5,6 @@ pages_build_output_dir = "./public"
 [[d1_databases]]
 binding = "DB"
 database_name = "ktpl10-hoi-dap"
-database_id = "THAY_DATABASE_ID_SAU_KHI_TAO_D1"
-
+database_id = "00000002-00000000-0000512b-6f4c889c0d476c685240c4dc9e1f8854"
 [ai]
 binding = "AI"
