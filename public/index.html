@@ -144,7 +144,10 @@ async function loadAdminQuestions(){
         <div class="status" id="admin-item-status-${q.id}" role="status"></div></div>
       </article>`;
     }).join("");
-    box.querySelectorAll(".generateBtn").forEach(btn=>btn.addEventListener("click",()=>generateDraft(Number(btn.dataset.id),btn)));\n    box.querySelectorAll(".copyAdminQuestionBtn").forEach(btn=>btn.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(decodeURIComponent(btn.dataset.copy));btn.textContent="Đã sao chép ✓";}catch{btn.textContent="Không thể sao chép";}}));\n    box.querySelectorAll(".deleteQuestionBtn").forEach(btn=>btn.addEventListener("click",()=>deleteQuestion(Number(btn.dataset.id),btn)));\n    box.querySelectorAll(".directCheck").forEach(input=>input.addEventListener("change",()=>setDirectAnswer(Number(input.dataset.id),input.checked)));
+    box.querySelectorAll(".generateBtn").forEach(btn=>btn.addEventListener("click",()=>generateDraft(Number(btn.dataset.id),btn)));
+    box.querySelectorAll(".copyAdminQuestionBtn").forEach(btn=>btn.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(decodeURIComponent(btn.dataset.copy));btn.textContent="Đã sao chép ✓";}catch{btn.textContent="Không thể sao chép";}}));
+    box.querySelectorAll(".deleteQuestionBtn").forEach(btn=>btn.addEventListener("click",()=>deleteQuestion(Number(btn.dataset.id),btn)));
+    box.querySelectorAll(".directCheck").forEach(input=>input.addEventListener("change",()=>setDirectAnswer(Number(input.dataset.id),input.checked)));
     box.querySelectorAll(".approveBtn").forEach(btn=>btn.addEventListener("click",()=>approveDraft(Number(btn.dataset.id),btn)));
   }catch(e){box.innerHTML=`<div class="empty">${escapeHTML(e.message)}</div>`;}
 }
