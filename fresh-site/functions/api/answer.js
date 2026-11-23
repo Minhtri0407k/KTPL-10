@@ -69,7 +69,7 @@ export async function onRequestPost({ request, env }) {
     "Hãy tạo bản nháp trả lời. Cuối câu trả lời, thêm mục 'Lưu ý kiểm tra' nếu thông tin chưa đủ chắc chắn."
   ].join("\n\n");
 
-  const result = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
+  const result = await env.AI.run("@cf/google/gemma-4-26b-a4b-it", {
     messages: [
       { role: "system", content: "Bạn là trợ lý học tập chính xác, thận trọng và không bịa nguồn." },
       { role: "user", content: prompt }
