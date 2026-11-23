@@ -1,4 +1,3 @@
-
 async function searchWikipedia(lang, question) {
   const url = new URL(`https://${lang}.wikipedia.org/w/api.php`);
 
