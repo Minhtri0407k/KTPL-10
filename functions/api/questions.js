@@ -165,8 +165,9 @@ Hãy trả lời trực tiếp câu hỏi. Nếu sử dụng thông tin Internet
         answer = "Chưa có tài liệu lớp và chưa tìm được nguồn Internet phù hợp. Vui lòng hỏi giáo viên hoặc bổ sung tài liệu.";
       }
     } catch (e) {
-      answer = "Câu hỏi đã được lưu nhưng AI hoặc dịch vụ tìm kiếm đang gặp lỗi. Vui lòng thử lại sau.";
-    }
+  console.error("KTPL_AI_ERROR:", e?.stack || e);
+  answer = "Câu hỏi đã được lưu nhưng hệ thống tạo đáp án đang gặp lỗi. Vui lòng thử lại sau.";
+}
 
     await env.DB.prepare(
       "UPDATE questions SET answer = ? WHERE id = ?"
