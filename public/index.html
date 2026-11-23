@@ -1,556 +1,440 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#2563eb">
-  <title>KTPL 10 - Góc hỏi đáp</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#2563eb">
+<title>KTPL 10 - Hỏi đáp</title>
 
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: #f5f7fb;
-      color: #172033;
-      font-family: Arial, sans-serif;
-    }
-
-    .container {
-      width: min(720px, 100%);
-      margin: auto;
-      padding: 22px 16px 50px;
-    }
-
-    header { margin-bottom: 22px; }
-
-    header h1 {
-      color: #2563eb;
-      font-size: 27px;
-      margin: 0 0 5px;
-    }
-
-    header p {
-      color: #64748b;
-      margin: 0;
-      font-size: 14px;
-    }
-
-    .panel {
-      background: white;
-      border: 1px solid #e5eaf2;
-      border-radius: 14px;
-      padding: 18px;
-      margin-bottom: 18px;
-    }
-
-    h2 {
-      font-size: 18px;
-      margin: 0 0 16px;
-    }
-
-    label {
-      display: block;
-      font-size: 14px;
-      font-weight: 600;
-      margin: 13px 0 7px;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #d7deea;
-      border-radius: 9px;
-      font: inherit;
-      font-size: 15px;
-      outline: none;
-      background: white;
-    }
-
-    input:focus, textarea:focus {
-      border-color: #2563eb;
-    }
-
-    textarea {
-      min-height: 105px;
-      resize: vertical;
-    }
-
-    button {
-      border: 0;
-      border-radius: 9px;
-      padding: 11px 14px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .primary {
-      width: 100%;
-      margin-top: 15px;
-      color: white;
-      background: #2563eb;
-    }
-
-    .primary:disabled {
-      opacity: .6;
-      cursor: wait;
-    }
-
-    .secondary {
-      color: #1d4ed8;
-      background: #eff6ff;
-    }
-
-    .danger {
-      color: #b91c1c;
-      background: #fee2e2;
-    }
-
-    .muted {
-      color: #64748b;
-      font-size: 13px;
-    }
-
-    .topline {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 13px;
-    }
-
-    .topline h2 { margin: 0; }
-
-    .count {
-      color: #64748b;
-      font-size: 13px;
-    }
-
-    .question {
-      border: 1px solid #e5eaf2;
-      border-radius: 12px;
-      background: white;
-      padding: 15px;
-      margin-bottom: 11px;
-    }
-
-    .question-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
-    }
-
-    .class-tag {
-      background: #eff6ff;
-      color: #1d4ed8;
-      border-radius: 20px;
-      padding: 5px 9px;
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .question h3 {
-      font-size: 16px;
-      line-height: 1.45;
-      margin: 10px 0;
-      overflow-wrap: anywhere;
-    }
-
-    .question-meta {
-      color: #64748b;
-      font-size: 12px;
-      margin-bottom: 12px;
-    }
-
-    .actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .admin-tools {
-      display: none;
-      background: #fff7ed;
-      border: 1px solid #fed7aa;
-      padding: 13px;
-      border-radius: 11px;
-      margin-bottom: 13px;
-    }
-
-    .admin-tools.active { display: block; }
-
-    .admin-tools .actions { margin-top: 10px; }
-
-    .admin-check {
-      width: 18px;
-      height: 18px;
-      accent-color: #2563eb;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 28px 12px;
-      color: #64748b;
-      background: white;
-      border: 1px dashed #cbd5e1;
-      border-radius: 12px;
-    }
-
-    #status {
-      font-size: 13px;
-      margin-top: 10px;
-      color: #64748b;
-    }
-
-    .admin-entry {
-      text-align: center;
-      margin-top: 25px;
-    }
-
-    .admin-entry button {
-      color: #64748b;
-      background: transparent;
-      text-decoration: underline;
-    }
-
-    @media (max-width: 420px) {
-      .container { padding: 18px 12px 40px; }
-      .panel { padding: 15px; }
-    }
-  </style>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;background:#f5f7fb;color:#172033;
+  font-family:Arial,sans-serif
+}
+.container{max-width:760px;margin:auto;padding:22px 15px 50px}
+header{margin-bottom:22px}
+header h1{color:#2563eb;margin:0 0 5px;font-size:27px}
+header p,.muted{color:#64748b;font-size:13px}
+.panel,.question{
+  background:white;border:1px solid #e5eaf2;
+  border-radius:13px;padding:16px;margin-bottom:14px
+}
+h2{font-size:18px;margin:0 0 15px}
+label{display:block;font-size:14px;font-weight:bold;margin:12px 0 6px}
+input,textarea,select{
+  width:100%;padding:12px;border:1px solid #d7deea;
+  border-radius:9px;font:inherit;background:white
+}
+textarea{min-height:85px;resize:vertical}
+button{
+  border:0;border-radius:9px;padding:10px 13px;
+  font-weight:bold;cursor:pointer;font-size:13px
+}
+.primary{background:#2563eb;color:white;width:100%;margin-top:14px}
+.secondary{background:#eff6ff;color:#1d4ed8}
+.danger{background:#fee2e2;color:#b91c1c}
+.success{background:#dcfce7;color:#166534}
+button:disabled{opacity:.5}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.question-number{font-size:13px;color:#2563eb;font-weight:bold}
+.question h3{font-size:16px;line-height:1.5;overflow-wrap:anywhere}
+.meta{font-size:12px;color:#64748b;margin:8px 0}
+.status{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:bold}
+.pending{background:#fff7ed;color:#c2410c}
+.direct{background:#dbeafe;color:#1d4ed8}
+.written{background:#dcfce7;color:#166534}
+.both{background:#ede9fe;color:#6d28d9}
+.answer{
+  background:#f8fafc;border-left:3px solid #16a34a;
+  padding:12px;margin:12px 0;border-radius:5px;
+  white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;
+  line-height:1.55
+}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.admin{display:none;background:#eff6ff;padding:14px;border-radius:12px;margin-bottom:15px}
+.admin.active{display:block}
+.admin-editor{display:none;margin-top:13px;padding-top:12px;border-top:1px solid #e2e8f0}
+.admin-editor.active{display:block}
+.direct-check{display:flex;align-items:center;gap:8px;font-size:13px;margin-top:12px}
+.direct-check input{width:18px;height:18px}
+.admin-check{width:18px;height:18px}
+.empty{text-align:center;padding:25px;color:#64748b;background:white;border:1px dashed #cbd5e1;border-radius:12px}
+#notice{font-size:13px;color:#64748b;margin-top:10px}
+.admin-login{text-align:center;margin-top:25px}
+.admin-login button{background:transparent;color:#64748b;text-decoration:underline}
+@media(max-width:450px){
+.container{padding:17px 11px 40px}
+.panel,.question{padding:13px}
+}
+</style>
 </head>
 
 <body>
 <main class="container">
 
-  <header>
-    <h1>KTPL 10</h1>
-    <p>Góc hỏi đáp và chia sẻ câu hỏi của lớp</p>
-  </header>
+<header>
+  <h1>KTPL 10</h1>
+  <p>Góc hỏi đáp của lớp học</p>
+</header>
 
-  <section class="panel">
-    <h2>Đăng câu hỏi</h2>
+<section class="panel">
+  <h2>Đăng câu hỏi</h2>
+  <form id="questionForm">
+    <label for="className">Tên lớp</label>
+    <input id="className" placeholder="Ví dụ: 10TN1" maxlength="30" required>
 
-    <form id="questionForm">
-      <label for="className">Tên lớp</label>
-      <input id="className" maxlength="30"
-        placeholder="Ví dụ: 10TH1" required>
+    <label for="name">Tên người gửi</label>
+    <input id="name" placeholder="Nhập họ và tên" maxlength="50" required>
 
-      <label for="name">Tên người gửi</label>
-      <input id="name" maxlength="50"
-        placeholder="Nhập họ và tên" required>
+    <label for="question">Nội dung câu hỏi</label>
+    <textarea id="question" placeholder="Nhập câu hỏi..." maxlength="1500" required></textarea>
 
-      <label for="question">Nội dung câu hỏi</label>
-      <textarea id="question" maxlength="1500"
-        placeholder="Nhập câu hỏi của bạn..." required></textarea>
+    <button class="primary" id="submitBtn">Gửi câu hỏi</button>
+    <div id="notice"></div>
+  </form>
+</section>
 
-      <button class="primary" id="submitBtn" type="submit">
-        Gửi câu hỏi
-      </button>
-
-      <div id="status" role="status"></div>
-    </form>
-  </section>
-
-  <section>
-    <div class="topline">
-      <h2>Danh sách câu hỏi</h2>
-      <span class="count" id="count">Đang tải...</span>
-    </div>
-
-    <div class="admin-tools" id="adminTools">
-      <strong>Chế độ quản trị</strong>
-      <div class="muted">Chọn câu hỏi cần xóa hoặc sao chép.</div>
-
-      <div class="actions">
-        <button class="secondary" id="selectAllBtn">Chọn tất cả</button>
-        <button class="secondary" id="copySelectedBtn">Sao chép đã chọn</button>
-        <button class="danger" id="deleteSelectedBtn">Xóa đã chọn</button>
-        <button class="secondary" id="logoutBtn">Thoát</button>
-      </div>
-    </div>
-
-    <div id="questionList">
-      <div class="empty">Đang tải câu hỏi...</div>
-    </div>
-  </section>
-
-  <div class="admin-entry">
-    <button id="adminBtn">Khu vực quản trị lớp</button>
+<section>
+  <div class="topline" style="margin-bottom:12px">
+    <h2>Danh sách câu hỏi</h2>
+    <span class="muted" id="count">0 câu</span>
   </div>
+
+  <input id="search" placeholder="Tìm câu hỏi, tên người gửi, lớp..." style="margin-bottom:10px">
+
+  <select id="filter" style="margin-bottom:13px">
+    <option value="all">Tất cả câu hỏi</option>
+    <option value="pending">Chưa giải đáp</option>
+    <option value="direct">Đã giải đáp trực tiếp</option>
+    <option value="written">Đã trả lời bằng văn bản</option>
+    <option value="both">Đã giải đáp cả hai cách</option>
+  </select>
+
+  <div class="admin" id="adminPanel">
+    <strong>Chế độ quản trị</strong>
+    <p class="muted">Quản lý câu hỏi và câu trả lời.</p>
+    <div class="actions">
+      <button class="secondary" id="selectAll">Chọn tất cả</button>
+      <button class="secondary" id="copySelected">Sao chép đã chọn</button>
+      <button class="danger" id="deleteSelected">Xóa đã chọn</button>
+      <button class="secondary" id="logout">Đăng xuất</button>
+    </div>
+  </div>
+
+  <div id="list"><div class="empty">Đang tải...</div></div>
+</section>
+
+<div class="admin-login">
+  <button id="adminLogin">Khu vực quản trị lớp</button>
+</div>
 
 </main>
 
 <script>
-  const API = "/api/questions";
+const API="/api/questions";
+const $=id=>document.getElementById(id);
 
-  let questions = [];
-  let adminToken = sessionStorage.getItem("ktpl_admin_token") || "";
-  let adminMode = false;
+let questions=[];
+let token=sessionStorage.getItem("ktpl_admin_token")||"";
+let admin=false;
 
-  const $ = id => document.getElementById(id);
+function escapeHTML(s){
+  return String(s??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
 
-  function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, char => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;"
-    })[char]);
+function getStatus(q){
+  const hasAnswer=Boolean(String(q.answer||"").trim());
+  const direct=Number(q.answered_directly)===1;
+
+  if(hasAnswer&&direct)return "both";
+  if(hasAnswer)return "written";
+  if(direct)return "direct";
+  return "pending";
+}
+
+const statusNames={
+  pending:"Chưa giải đáp",
+  direct:"Đã giải đáp trực tiếp",
+  written:"Đã trả lời bằng văn bản",
+  both:"Đã giải đáp cả hai cách"
+};
+
+function copyContent(q){
+  return `Câu hỏi số ${q.number}\nLớp: ${q.class_name}\nNgười gửi: ${q.name}\n\nCâu hỏi: ${q.question}`;
+}
+
+async function copyText(text){
+  try{
+    await navigator.clipboard.writeText(text);
+    alert("Đã sao chép!");
+  }catch{
+    const t=document.createElement("textarea");
+    t.value=text;document.body.appendChild(t);
+    t.select();
+    const ok=document.execCommand("copy");
+    t.remove();
+    alert(ok?"Đã sao chép!":"Không thể sao chép.");
   }
+}
 
-  function dateText(value) {
-    if (!value) return "";
-    const date = new Date(String(value).replace(" ", "T") + "Z");
-    if (Number.isNaN(date.getTime())) return escapeHTML(value);
-    return date.toLocaleString("vi-VN");
+async function loadQuestions(){
+  try{
+    const r=await fetch(API,{cache:"no-store"});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error);
+    questions=d.questions||[];
+    render();
+  }catch(e){
+    $("list").innerHTML='<div class="empty">Không tải được danh sách câu hỏi.</div>';
   }
+}
 
-  async function loadQuestions() {
-    try {
-      const response = await fetch(API, { cache: "no-store" });
-      const data = await response.json();
+function render(){
+  const search=$("search").value.trim().toLowerCase();
+  const filter=$("filter").value;
 
-      if (!response.ok) throw new Error(data.error || "Không tải được dữ liệu.");
+  // Đánh số theo thứ tự hiển thị, câu mới nhất là số 1.
+  const numbered=questions.map((q,i)=>({...q,number:i+1}));
 
-      questions = data.questions || [];
-      renderQuestions();
-    } catch (error) {
-      $("count").textContent = "Lỗi tải dữ liệu";
-      $("questionList").innerHTML =
-        '<div class="empty">Không thể tải câu hỏi. Vui lòng thử tải lại trang.</div>';
-    }
-  }
-
-  function questionText(q) {
-    return `Lớp: ${q.class_name || "Chưa ghi lớp"}\n` +
-      `Người gửi: ${q.name}\n\n` +
-      `Câu hỏi: ${q.question}`;
-  }
-
-  function renderQuestions() {
-    $("count").textContent = `${questions.length} câu hỏi`;
-
-    if (!questions.length) {
-      $("questionList").innerHTML =
-        '<div class="empty">Chưa có câu hỏi nào. Hãy là người đầu tiên gửi câu hỏi nhé!</div>';
-      return;
-    }
-
-    $("questionList").innerHTML = questions.map(q => `
-      <article class="question">
-        <div class="question-top">
-          <div>
-            ${adminMode
-              ? `<input class="admin-check" type="checkbox" value="${Number(q.id)}" aria-label="Chọn câu hỏi">`
-              : ""}
-          </div>
-          <span class="class-tag">${escapeHTML(q.class_name || "Chưa ghi lớp")}</span>
-        </div>
-
-        <h3>${escapeHTML(q.question)}</h3>
-
-        <div class="question-meta">
-          ${escapeHTML(q.name)} · ${dateText(q.created_at)}
-        </div>
-
-        <div class="actions">
-          <button class="secondary copy-one" data-id="${Number(q.id)}">
-            Sao chép
-          </button>
-          ${adminMode ? `
-            <button class="danger delete-one" data-id="${Number(q.id)}">
-              Xóa câu hỏi
-            </button>
-          ` : ""}
-        </div>
-      </article>
-    `).join("");
-  }
-
-  async function copyText(text) {
-    try {
-      await navigator.clipboard.writeText(text);
-      alert("Đã sao chép!");
-    } catch {
-      const area = document.createElement("textarea");
-      area.value = text;
-      document.body.appendChild(area);
-      area.select();
-      const success = document.execCommand("copy");
-      area.remove();
-      alert(success ? "Đã sao chép!" : "Không thể sao chép trên trình duyệt này.");
-    }
-  }
-
-  $("questionForm").addEventListener("submit", async event => {
-    event.preventDefault();
-
-    const button = $("submitBtn");
-    button.disabled = true;
-    button.textContent = "Đang gửi...";
-    $("status").textContent = "";
-
-    try {
-      const response = await fetch(API, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          className: $("className").value,
-          name: $("name").value,
-          question: $("question").value
-        })
-      });
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Gửi câu hỏi thất bại.");
-
-      $("question").value = "";
-      $("status").textContent = "Đã gửi câu hỏi thành công!";
-      await loadQuestions();
-    } catch (error) {
-      $("status").textContent = error.message;
-    } finally {
-      button.disabled = false;
-      button.textContent = "Gửi câu hỏi";
-    }
+  const filtered=numbered.filter(q=>{
+    const content=[q.question,q.name,q.class_name].join(" ").toLowerCase();
+    return content.includes(search)&&
+      (filter==="all"||getStatus(q)===filter);
   });
 
-  $("questionList").addEventListener("click", async event => {
-    const copyButton = event.target.closest(".copy-one");
-    const deleteButton = event.target.closest(".delete-one");
+  $("count").textContent=`${questions.length} câu hỏi`;
 
-    if (copyButton) {
-      const q = questions.find(item => Number(item.id) === Number(copyButton.dataset.id));
-      if (q) await copyText(questionText(q));
+  if(!filtered.length){
+    $("list").innerHTML='<div class="empty">Không tìm thấy câu hỏi phù hợp.</div>';
+    return;
+  }
+
+  $("list").innerHTML=filtered.map(q=>{
+    const status=getStatus(q);
+    return `
+    <article class="question">
+      <div class="topline">
+        <span class="question-number">CÂU HỎI #${q.number}</span>
+        <span class="status ${status}">${statusNames[status]}</span>
+      </div>
+
+      <div class="meta">
+        ${escapeHTML(q.class_name)} · ${escapeHTML(q.name)} · ${escapeHTML(q.created_at||"")}
+      </div>
+
+      <h3>${escapeHTML(q.question)}</h3>
+
+      ${q.answer?`
+        <div class="answer">
+          <strong>Câu trả lời:</strong>
+          ${escapeHTML(q.answer)}
+        </div>
+      `:""}
+
+      ${Number(q.answered_directly)===1?`
+        <div class="meta">✓ Đã giải đáp trực tiếp trước lớp</div>
+      `:""}
+
+      <div class="actions">
+        <button class="secondary copyBtn" data-id="${Number(q.id)}">Sao chép</button>
+        ${admin?`
+          <button class="secondary editBtn" data-id="${Number(q.id)}">
+            ${q.answer||Number(q.answered_directly)?"Chỉnh sửa":"Trả lời"}
+          </button>
+          <button class="danger deleteBtn" data-id="${Number(q.id)}">Xóa</button>
+          <label style="display:flex;align-items:center;gap:5px;margin:0">
+            <input type="checkbox" class="admin-check" value="${Number(q.id)}">
+            <span class="muted">Chọn</span>
+          </label>
+        `:""}
+      </div>
+
+      ${admin?`
+        <div class="admin-editor" id="editor-${Number(q.id)}">
+          <label>Nhập câu trả lời</label>
+          <textarea class="answer-input" id="answer-${Number(q.id)}"
+            placeholder="Viết đáp án cho câu hỏi...">${escapeHTML(q.answer||"")}</textarea>
+
+          <label class="direct-check">
+            <input type="checkbox" id="direct-${Number(q.id)}"
+              ${Number(q.answered_directly)===1?"checked":""}>
+            Đã giải đáp trực tiếp trước lớp
+          </label>
+
+          <div class="actions">
+            <button class="primary saveBtn" data-id="${Number(q.id)}">Lưu câu trả lời</button>
+            <button class="secondary cancelBtn" data-id="${Number(q.id)}">Đóng</button>
+          </div>
+        </div>
+      `:""}
+    </article>`;
+  }).join("");
+}
+
+$("questionForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  $("submitBtn").disabled=true;
+  $("submitBtn").textContent="Đang gửi...";
+  $("notice").textContent="";
+
+  try{
+    const r=await fetch(API,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        className:$("className").value,
+        name:$("name").value,
+        question:$("question").value
+      })
+    });
+
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error||"Gửi thất bại.");
+
+    $("question").value="";
+    $("notice").textContent="Đã gửi câu hỏi thành công!";
+    await loadQuestions();
+  }catch(e){
+    $("notice").textContent=e.message;
+  }finally{
+    $("submitBtn").disabled=false;
+    $("submitBtn").textContent="Gửi câu hỏi";
+  }
+});
+
+$("search").addEventListener("input",render);
+$("filter").addEventListener("change",render);
+
+$("list").addEventListener("click",async e=>{
+  const button=e.target.closest("button");
+  if(!button)return;
+
+  const id=Number(button.dataset.id);
+  const q=questions.find(x=>Number(x.id)===id);
+  if(!q)return;
+
+  if(button.classList.contains("copyBtn")){
+    const number=questions.findIndex(x=>Number(x.id)===id)+1;
+    await copyText(copyContent({...q,number}));
+  }
+
+  if(button.classList.contains("editBtn")){
+    $("editor-"+id).classList.toggle("active");
+  }
+
+  if(button.classList.contains("cancelBtn")){
+    $("editor-"+id).classList.remove("active");
+  }
+
+  if(button.classList.contains("saveBtn")){
+    const answer=$("answer-"+id).value;
+    const answeredDirectly=$("direct-"+id).checked;
+
+    button.disabled=true;
+    try{
+      const r=await fetch(API,{
+        method:"PUT",
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization":`Bearer ${token}`
+        },
+        body:JSON.stringify({id,answer,answeredDirectly})
+      });
+
+      const d=await r.json();
+      if(!r.ok)throw new Error(d.error||"Không lưu được.");
+
+      alert("Đã cập nhật câu hỏi!");
+      await loadQuestions();
+    }catch(err){
+      alert(err.message);
+    }finally{
+      button.disabled=false;
     }
+  }
 
-    if (deleteButton) {
-      const id = Number(deleteButton.dataset.id);
-      if (!confirm("Ông có chắc muốn xóa câu hỏi này không?")) return;
+  if(button.classList.contains("deleteBtn")){
+    if(confirm("Ông có chắc muốn xóa câu hỏi này?")){
       await deleteQuestions([id]);
     }
-  });
-
-  function setAdminMode(enabled) {
-    adminMode = enabled;
-    $("adminTools").classList.toggle("active", enabled);
-    $("adminBtn").textContent = enabled
-      ? "Đang ở chế độ quản trị"
-      : "Khu vực quản trị lớp";
-    renderQuestions();
   }
+});
 
-  $("adminBtn").addEventListener("click", async () => {
-    if (adminMode) return;
-
-    const token = prompt("Nhập mã quản trị lớp:");
-    if (!token) return;
-
-    adminToken = token;
-
-    // Kiểm tra mã bằng một yêu cầu xóa không có ID hợp lệ.
-    // API sẽ trả 400 nếu mã đúng, 401 nếu mã sai.
-    try {
-      const response = await fetch(API, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${adminToken}`
-        },
-        body: JSON.stringify({ ids: [] })
-      });
-
-      if (response.status === 401) {
-        alert("Mã quản trị không đúng.");
-        adminToken = "";
-        return;
-      }
-
-      if (response.status !== 400) {
-        alert("Không xác minh được quyền quản trị. Hãy thử lại.");
-        return;
-      }
-
-      sessionStorage.setItem("ktpl_admin_token", adminToken);
-      setAdminMode(true);
-    } catch {
-      alert("Không thể kết nối máy chủ.");
-    }
-  });
-
-  async function deleteQuestions(ids) {
-    if (!adminToken || !adminMode) {
-      alert("Ông cần đăng nhập quản trị trước.");
-      return;
-    }
-
-    try {
-      const response = await fetch(API, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${adminToken}`
-        },
-        body: JSON.stringify({ ids })
-      });
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Xóa thất bại.");
-
-      alert(`Đã xóa ${data.deleted} câu hỏi.`);
-      await loadQuestions();
-    } catch (error) {
-      alert(error.message);
-    }
-  }
-
-  $("selectAllBtn").addEventListener("click", () => {
-    document.querySelectorAll(".admin-check").forEach(box => {
-      box.checked = true;
+async function deleteQuestions(ids){
+  try{
+    const r=await fetch(API,{
+      method:"DELETE",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${token}`
+      },
+      body:JSON.stringify({ids})
     });
-  });
 
-  $("copySelectedBtn").addEventListener("click", async () => {
-    const ids = [...document.querySelectorAll(".admin-check:checked")]
-      .map(box => Number(box.value));
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error||"Xóa thất bại.");
 
-    const selected = questions.filter(q => ids.includes(Number(q.id)));
+    alert(`Đã xóa ${d.deleted} câu hỏi.`);
+    await loadQuestions();
+  }catch(e){
+    alert(e.message);
+  }
+}
 
-    if (!selected.length) {
-      alert("Ông chưa chọn câu hỏi nào.");
-      return;
-    }
+$("adminLogin").addEventListener("click",()=>{
+  if(admin)return;
+  const password=prompt("Nhập mã quản trị:");
+  if(!password)return;
 
-    await copyText(selected.map(questionText).join("\n\n--------------------\n\n"));
-  });
+  token=password;
+  sessionStorage.setItem("ktpl_admin_token",token);
+  admin=true;
+  $("adminPanel").classList.add("active");
+  $("adminLogin").textContent="Đang ở chế độ quản trị";
+  render();
+});
 
-  $("deleteSelectedBtn").addEventListener("click", async () => {
-    const ids = [...document.querySelectorAll(".admin-check:checked")]
-      .map(box => Number(box.value));
+$("logout").addEventListener("click",()=>{
+  admin=false;
+  token="";
+  sessionStorage.removeItem("ktpl_admin_token");
+  $("adminPanel").classList.remove("active");
+  $("adminLogin").textContent="Khu vực quản trị lớp";
+  render();
+});
 
-    if (!ids.length) {
-      alert("Ông chưa chọn câu hỏi nào.");
-      return;
-    }
+$("selectAll").addEventListener("click",()=>{
+  document.querySelectorAll(".admin-check").forEach(x=>x.checked=true);
+});
 
-    if (!confirm(`Xóa ${ids.length} câu hỏi đã chọn?`)) return;
+$("copySelected").addEventListener("click",async()=>{
+  const ids=[...document.querySelectorAll(".admin-check:checked")]
+    .map(x=>Number(x.value));
+
+  const selected=questions
+    .map((q,i)=>({...q,number:i+1}))
+    .filter(q=>ids.includes(Number(q.id)));
+
+  if(!selected.length)return alert("Chưa chọn câu hỏi.");
+
+  await copyText(selected.map(copyContent).join("\n\n----------------\n\n"));
+});
+
+$("deleteSelected").addEventListener("click",async()=>{
+  const ids=[...document.querySelectorAll(".admin-check:checked")]
+    .map(x=>Number(x.value));
+
+  if(!ids.length)return alert("Chưa chọn câu hỏi.");
+  if(confirm(`Xóa ${ids.length} câu hỏi đã chọn?`)){
     await deleteQuestions(ids);
-  });
+  }
+});
 
-  $("logoutBtn").addEventListener("click", () => {
-    adminToken = "";
-    sessionStorage.removeItem("ktpl_admin_token");
-    setAdminMode(false);
-  });
-
-  loadQuestions();
-  setInterval(loadQuestions, 20000);
+loadQuestions();
+setInterval(loadQuestions,20000);
 </script>
 </body>
 </html>
