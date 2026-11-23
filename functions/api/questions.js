@@ -9,12 +9,12 @@ function json(data, status = 200) {
   });
 }
 
-function isAdmin(request, env) {
-  const auth = request.headers.get("Authorization") || "";
-  return Boolean(env.ADMIN_TOKEN) &&
-    auth === `Bearer ${env.ADMIN_TOKEN}`;
-}
+const ADMIN_PASSWORD = "KTPL10@2026";
 
+function isAdmin(request) {
+  const auth = request.headers.get("Authorization") || "";
+  return auth === `Bearer ${ADMIN_PASSWORD}`;
+}
 // Lấy danh sách câu hỏi
 export async function onRequestGet({ env }) {
   try {
