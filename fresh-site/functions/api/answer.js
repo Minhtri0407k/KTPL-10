@@ -74,7 +74,7 @@ export async function onRequestPost({ request, env }) {
       { role: "system", content: "Bạn là trợ lý học tập chính xác, thận trọng và không bịa nguồn." },
       { role: "user", content: prompt }
     ],
-    max_tokens: 900
+    max_completion_tokens: 900
   });
   const draft = String(result?.response || result?.output_text || "").trim();
   if (!draft) return json({ error: "AI không trả về nội dung. Thử lại sau." }, 502);
