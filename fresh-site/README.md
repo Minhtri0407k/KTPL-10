@@ -18,7 +18,7 @@ Website hỏi đáp cho một bài KTPL 10, triển khai trên Cloudflare Pages 
 3. Trong Pages → Settings → Variables and Secrets, thêm secrets:
    - `ADMIN_TOKEN`: tự tạo một chuỗi bí mật dài, không dùng mật khẩu nơi khác.
    - `TAVILY_API_KEY`: khóa Tavily nếu muốn bật tìm kiếm web cho AI.
-4. Đặt Root directory của Pages là `fresh-site`, Build output directory là `public`. Không cần build command.
+4. Đặt Root directory của Pages là `fresh-site`, Build output directory là `public`. Không cần build command.\n5. AI dùng model `@cf/google/gemma-4-26b-a4b-it`; Cloudflare hiện liệt kê model này trong nhóm có thể dùng trên Workers Free. Workers AI vẫn có hạn mức miễn phí theo ngày, nên không thể cam kết sử dụng vô hạn.
 5. Giữ thư mục `functions` nằm trong `fresh-site` để Pages nhận các API routes.
 
 ## Lưu ý
