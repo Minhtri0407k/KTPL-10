@@ -1,0 +1,11 @@
+name = "ktpl10-fresh"
+compatibility_date = "2026-11-24"
+pages_build_output_dir = "./public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ktpl10-fresh"
+database_id = "b85b1ae5-0d67-479e-9f16-a4dd323d201e"
+
+[ai]
+binding = "AI"
