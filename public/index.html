@@ -100,10 +100,10 @@ async function loadQuestions(){
     $("#list").innerHTML=data.questions.map((q,index)=>`
       <article class="item">
         <div class="meta"><b>Câu ${data.questions.length-index} · ${escapeHTML(q.name)}</b><span>${dateText(q.created_at)}</span></div>
-        <div class="question">${escapeHTML(q.question)}</div>
+        <div class="question">${escapeHTML(q.question)}</div><div class="actions"><button class="secondary copyQuestionBtn" data-copy="${encodeURIComponent(q.question)}">Sao chép câu hỏi</button></div>
         ${q.answer?`<div class="answer"><b>🤖 Câu trả lời đã được duyệt</b><br>${escapeHTML(q.answer)}</div><div class="actions"><button class="secondary copyBtn" data-copy="${encodeURIComponent(q.answer)}">Sao chép câu trả lời</button></div>`:`<div class="small">⏳ Câu hỏi đang chờ quản trị viên xử lý.</div>`}
       </article>`).join("");
-    document.querySelectorAll(".copyBtn").forEach(b=>b.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(decodeURIComponent(b.dataset.copy));b.textContent="Đã sao chép ✓";}catch{b.textContent="Không thể sao chép";}}));
+    document.querySelectorAll(".copyBtn,.copyQuestionBtn").forEach(b=>b.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(decodeURIComponent(b.dataset.copy));b.textContent="Đã sao chép ✓";}catch{b.textContent="Không thể sao chép";}}));
   }catch(e){$("#count").textContent="";$("#list").innerHTML=`<div class="empty">${escapeHTML(e.message)}<br><span class="small">Có thể website chưa được cấu hình D1 hoặc chưa triển khai API.</span></div>`;}
 }
 $("#questionForm").addEventListener("submit",async e=>{
@@ -137,18 +137,18 @@ async function loadAdminQuestions(){
         <div class="meta"><b>#${q.id} · ${escapeHTML(q.name)}</b>${badge}</div>
         <div class="question">${escapeHTML(q.question)}</div>
         ${q.answer?`<div class="small">Đáp án đang hiển thị công khai:</div><div class="answer">${escapeHTML(q.answer)}</div>`:""}
-        <div class="actions"><button class="primary generateBtn" data-id="${q.id}">✨ AI tìm kiếm & soạn đáp án</button></div>
+        <div class="actions"><button class="primary generateBtn" data-id="${q.id}">✨ AI tìm kiếm & soạn đáp án</button><button class="quiet copyAdminQuestionBtn" data-copy="${encodeURIComponent(q.question)}">Sao chép câu hỏi</button><button class="quiet deleteQuestionBtn" data-id="${q.id}">Xóa câu hỏi</button></div><label style="display:flex;align-items:center;gap:8px;font-weight:500"><input class="directCheck" data-id="${q.id}" type="checkbox" style="width:auto" ${q.answered_directly?"checked":""}> Đã giải đáp trực tiếp trước lớp</label>
         <div class="draftbox"><label for="draft-${q.id}">Bản nháp (có thể chỉnh sửa trước khi duyệt)</label><textarea id="draft-${q.id}" placeholder="Bấm nút AI để tạo bản nháp...">${escapeHTML(q.answer_draft||"")}</textarea>
         ${sourceHTML}
         <div class="actions"><button class="success approveBtn" data-id="${q.id}" ${q.answer_draft?"":"disabled"}>✓ Duyệt & công khai</button></div>
         <div class="status" id="admin-item-status-${q.id}" role="status"></div></div>
       </article>`;
     }).join("");
-    box.querySelectorAll(".generateBtn").forEach(btn=>btn.addEventListener("click",()=>generateDraft(Number(btn.dataset.id),btn)));
+    box.querySelectorAll(".generateBtn").forEach(btn=>btn.addEventListener("click",()=>generateDraft(Number(btn.dataset.id),btn)));\n    box.querySelectorAll(".copyAdminQuestionBtn").forEach(btn=>btn.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(decodeURIComponent(btn.dataset.copy));btn.textContent="Đã sao chép ✓";}catch{btn.textContent="Không thể sao chép";}}));\n    box.querySelectorAll(".deleteQuestionBtn").forEach(btn=>btn.addEventListener("click",()=>deleteQuestion(Number(btn.dataset.id),btn)));\n    box.querySelectorAll(".directCheck").forEach(input=>input.addEventListener("change",()=>setDirectAnswer(Number(input.dataset.id),input.checked)));
     box.querySelectorAll(".approveBtn").forEach(btn=>btn.addEventListener("click",()=>approveDraft(Number(btn.dataset.id),btn)));
   }catch(e){box.innerHTML=`<div class="empty">${escapeHTML(e.message)}</div>`;}
 }
-async function generateDraft(id,btn){
+async function setDirectAnswer(id,checked){try{await api("/api/questions",{method:"PUT",headers:adminHeaders(),body:JSON.stringify({id,answeredDirectly:checked})});await loadQuestions();}catch(e){alert(e.message);await loadAdminQuestions();}}\nasync function deleteQuestion(id,btn){if(!confirm("Xóa câu hỏi này khỏi website? Thao tác này không thể hoàn tác."))return;btn.disabled=true;try{await api("/api/questions",{method:"DELETE",headers:adminHeaders(),body:JSON.stringify({id})});await loadAdminQuestions();await loadQuestions();}catch(e){alert(e.message);btn.disabled=false;}}\nasync function generateDraft(id,btn){
   const status=$("#admin-item-status-"+id);btn.disabled=true;btn.textContent="Đang tìm kiếm và soạn…";status.textContent="Đang tra cứu Internet và đối chiếu tài liệu Bài 10. Có thể mất một chút thời gian.";
   try{await api("/api/answer",{method:"POST",headers:adminHeaders(),body:JSON.stringify({id,action:"generate"})});status.textContent="Đã tạo bản nháp. Hãy đọc nội dung và kiểm tra nguồn trước khi công khai.";await loadAdminQuestions();}
   catch(e){status.textContent=e.message;btn.disabled=false;btn.textContent="✨ AI tìm kiếm & soạn đáp án";}
