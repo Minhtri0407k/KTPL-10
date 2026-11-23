@@ -20,8 +20,9 @@ export async function onRequestGet({ request, env }) {
     }
 
     const { results } = await env.DB.prepare(
-      `SELECT id, name, question, answer, answer_status,
-              answered_directly, created_at
+      `SELECT id, name, question,
+              CASE WHEN answer_status = 'approved' THEN answer ELSE '' END AS answer,
+              answer_status, answered_directly, created_at
        FROM questions ORDER BY id DESC LIMIT 200`
     ).all();
     return Response.json({ questions: results || [] });
