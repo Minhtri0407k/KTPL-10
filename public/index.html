@@ -101,7 +101,7 @@ async function loadQuestions(){
       <article class="item">
         <div class="meta"><b>Câu ${data.questions.length-index} · ${escapeHTML(q.name)}</b><span>${dateText(q.created_at)}</span></div>
         <div class="question">${escapeHTML(q.question)}</div><div class="actions"><button class="secondary copyQuestionBtn" data-copy="${encodeURIComponent(q.question)}">Sao chép câu hỏi</button></div>
-        ${q.answer?`<div class="answer"><b>🤖 Câu trả lời đã được duyệt</b><br>${escapeHTML(q.answer)}</div><div class="actions"><button class="secondary copyBtn" data-copy="${encodeURIComponent(q.answer)}">Sao chép câu trả lời</button></div>`:`<div class="small">⏳ Câu hỏi đang chờ quản trị viên xử lý.</div>`}
+        ${q.answer?`<div class="answer"><b>🤖 Câu trả lời đã được duyệt</b><br>${escapeHTML(q.answer)}</div><div class="actions"><button class="secondary copyBtn" data-copy="${encodeURIComponent(q.answer)}">Sao chép câu trả lời</button></div>`:q.answered_directly?`<div class="small">✓ Câu hỏi đã được giải đáp trực tiếp trước lớp.</div>`:`<div class="small">⏳ Câu hỏi đang chờ quản trị viên xử lý.</div>`}
       </article>`).join("");
     document.querySelectorAll(".copyBtn,.copyQuestionBtn").forEach(b=>b.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(decodeURIComponent(b.dataset.copy));b.textContent="Đã sao chép ✓";}catch{b.textContent="Không thể sao chép";}}));
   }catch(e){$("#count").textContent="";$("#list").innerHTML=`<div class="empty">${escapeHTML(e.message)}<br><span class="small">Có thể website chưa được cấu hình D1 hoặc chưa triển khai API.</span></div>`;}
