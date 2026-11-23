@@ -98,7 +98,7 @@ async function loadQuestions(){
       <article class="item">
         <div class="meta"><b>${escapeHTML(q.name)}</b><span>${dateText(q.created_at)}</span></div>
         <div class="question">${escapeHTML(q.question)}</div>
-        ${q.answer?`<div class="answer"><b>🤖 Trả lời tham khảo</b><br>${escapeHTML(q.answer)}</div>`:`<div class="small">Đang chờ trả lời…</div>`}
+        ${q.answer?`<div class="answer"><b>🤖 Trả lời tham khảo</b><br>${linkify(q.answer)}</div>`:`<div class="small">Đang chờ trả lời…</div>`}
         ${q.answer?`<div class="actions"><button class="secondary copyBtn" data-copy="${encodeURIComponent(q.answer)}">Sao chép câu trả lời</button></div>`:""}
       </article>`).join("");
     document.querySelectorAll(".copyBtn").forEach(b=>b.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(decodeURIComponent(b.dataset.copy));b.textContent="Đã sao chép ✓";}catch{b.textContent="Không thể sao chép";}}));
