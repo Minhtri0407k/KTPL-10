@@ -1,3 +1,4 @@
+const ADMIN_PASSWORD = "KTPL10@2026";
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -9,17 +10,17 @@ function json(data, status = 200) {
   });
 }
 
-const ADMIN_PASSWORD = "KTPL10@2026";
-
 function isAdmin(request) {
-  const auth = request.headers.get("Authorization") || "";
-  return auth === `Bearer ${ADMIN_PASSWORD}`;
+  return request.headers.get("Authorization") ===
+    `Bearer ${ADMIN_PASSWORD}`;
 }
-// Lấy danh sách câu hỏi
+
+// LẤY DANH SÁCH CÂU HỎI
 export async function onRequestGet({ env }) {
   try {
     const { results } = await env.DB.prepare(`
-      SELECT id, class_name, name, question, created_at
+      SELECT id, class_name, name, question, answer,
+             answered_directly, created_at
       FROM questions
       ORDER BY id DESC
       LIMIT 300
@@ -27,12 +28,12 @@ export async function onRequestGet({ env }) {
 
     return json({ questions: results || [] });
   } catch (error) {
-    console.error("GET QUESTIONS:", error);
-    return json({ error: "Không tải được danh sách câu hỏi." }, 500);
+    console.error("GET ERROR:", error);
+    return json({ error: "Không tải được câu hỏi." }, 500);
   }
 }
 
-// Gửi câu hỏi mới
+// HỌC SINH GỬI CÂU HỎI
 export async function onRequestPost({ request, env }) {
   try {
     const body = await request.json();
@@ -42,16 +43,17 @@ export async function onRequestPost({ request, env }) {
     const question = String(body.question || "").trim().slice(0, 1500);
 
     if (!className || !name || !question) {
-      return json({ error: "Vui lòng nhập đầy đủ tên lớp, tên và câu hỏi." }, 400);
+      return json({ error: "Vui lòng nhập đầy đủ thông tin." }, 400);
     }
 
     if (question.length < 5) {
-      return json({ error: "Câu hỏi cần ít nhất 5 ký tự." }, 400);
+      return json({ error: "Câu hỏi quá ngắn." }, 400);
     }
 
     const result = await env.DB.prepare(`
-      INSERT INTO questions (class_name, name, question, answer)
-      VALUES (?, ?, ?, '')
+      INSERT INTO questions
+      (class_name, name, question, answer, answered_directly)
+      VALUES (?, ?, ?, '', 0)
     `).bind(className, name, question).run();
 
     return json({
@@ -59,12 +61,42 @@ export async function onRequestPost({ request, env }) {
       id: result.meta.last_row_id
     });
   } catch (error) {
-    console.error("POST QUESTION:", error);
-    return json({ error: "Không thể gửi câu hỏi. Hãy thử lại." }, 500);
+    console.error("POST ERROR:", error);
+    return json({ error: "Không gửi được câu hỏi." }, 500);
   }
 }
 
-// Xóa một hoặc nhiều câu hỏi - chỉ quản trị viên
+// CẬP NHẬT CÂU TRẢ LỜI VÀ TRẠNG THÁI
+export async function onRequestPut({ request, env }) {
+  if (!isAdmin(request)) {
+    return json({ error: "Không có quyền quản trị." }, 401);
+  }
+
+  try {
+    const body = await request.json();
+
+    const id = Number(body.id);
+    const answer = String(body.answer ?? "").trim().slice(0, 5000);
+    const answeredDirectly = body.answeredDirectly ? 1 : 0;
+
+    if (!Number.isInteger(id) || id <= 0) {
+      return json({ error: "ID câu hỏi không hợp lệ." }, 400);
+    }
+
+    await env.DB.prepare(`
+      UPDATE questions
+      SET answer = ?, answered_directly = ?
+      WHERE id = ?
+    `).bind(answer, answeredDirectly, id).run();
+
+    return json({ ok: true });
+  } catch (error) {
+    console.error("PUT ERROR:", error);
+    return json({ error: "Không lưu được câu trả lời." }, 500);
+  }
+}
+
+// XÓA MỘT HOẶC NHIỀU CÂU HỎI
 export async function onRequestDelete({ request, env }) {
   if (!isAdmin(request)) {
     return json({ error: "Không có quyền quản trị." }, 401);
@@ -72,6 +104,7 @@ export async function onRequestDelete({ request, env }) {
 
   try {
     const body = await request.json();
+
     const ids = [...new Set(
       (Array.isArray(body.ids) ? body.ids : [body.id])
         .map(Number)
@@ -79,7 +112,7 @@ export async function onRequestDelete({ request, env }) {
     )];
 
     if (!ids.length || ids.length > 300) {
-      return json({ error: "Danh sách câu hỏi cần xóa không hợp lệ." }, 400);
+      return json({ error: "Danh sách ID không hợp lệ." }, 400);
     }
 
     const placeholders = ids.map(() => "?").join(",");
@@ -90,7 +123,7 @@ export async function onRequestDelete({ request, env }) {
 
     return json({ ok: true, deleted: ids.length });
   } catch (error) {
-    console.error("DELETE QUESTIONS:", error);
-    return json({ error: "Không thể xóa câu hỏi." }, 500);
+    console.error("DELETE ERROR:", error);
+    return json({ error: "Không xóa được câu hỏi." }, 500);
   }
 }
