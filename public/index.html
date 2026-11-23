@@ -152,7 +152,8 @@ async function loadAdminQuestions(){
   }catch(e){box.innerHTML=`<div class="empty">${escapeHTML(e.message)}</div>`;}
 }
 async function setDirectAnswer(id,checked){try{await api("/api/questions",{method:"PUT",headers:adminHeaders(),body:JSON.stringify({id,answeredDirectly:checked})});await loadQuestions();}catch(e){alert(e.message);await loadAdminQuestions();}}
-async function deleteQuestion(id,btn){if(!confirm("Xóa câu hỏi này khỏi website? Thao tác này không thể hoàn tác."))return;btn.disabled=true;try{await api("/api/questions",{method:"DELETE",headers:adminHeaders(),body:JSON.stringify({id})});await loadAdminQuestions();await loadQuestions();}catch(e){alert(e.message);btn.disabled=false;}}\nasync function generateDraft(id,btn){
+async function deleteQuestion(id,btn){if(!confirm("Xóa câu hỏi này khỏi website? Thao tác này không thể hoàn tác."))return;btn.disabled=true;try{await api("/api/questions",{method:"DELETE",headers:adminHeaders(),body:JSON.stringify({id})});await loadAdminQuestions();await loadQuestions();}catch(e){alert(e.message);btn.disabled=false;}}
+async function generateDraft(id,btn){
   const status=$("#admin-item-status-"+id);btn.disabled=true;btn.textContent="Đang tìm kiếm và soạn…";status.textContent="Đang tra cứu Internet và đối chiếu tài liệu Bài 10. Có thể mất một chút thời gian.";
   try{await api("/api/answer",{method:"POST",headers:adminHeaders(),body:JSON.stringify({id,action:"generate"})});status.textContent="Đã tạo bản nháp. Hãy đọc nội dung và kiểm tra nguồn trước khi công khai.";await loadAdminQuestions();}
   catch(e){status.textContent=e.message;btn.disabled=false;btn.textContent="✨ AI tìm kiếm & soạn đáp án";}
