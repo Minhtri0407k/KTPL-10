@@ -66,7 +66,7 @@ export async function onRequestPost({ request, env }) {
 
 // Xóa một hoặc nhiều câu hỏi - chỉ quản trị viên
 export async function onRequestDelete({ request, env }) {
-  if (!isAdmin(request, env)) {
+  if (!isAdmin(request)) {
     return json({ error: "Không có quyền quản trị." }, 401);
   }
 
