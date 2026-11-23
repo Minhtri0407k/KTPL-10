@@ -69,14 +69,25 @@ export async function onRequestPost({ request, env }) {
     "Hãy tạo bản nháp trả lời. Cuối câu trả lời, thêm mục 'Lưu ý kiểm tra' nếu thông tin chưa đủ chắc chắn."
   ].join("\n\n");
 
-  const result = await env.AI.run("@cf/google/gemma-4-26b-a4b-it", {
-    messages: [
-      { role: "system", content: "Bạn là trợ lý học tập chính xác, thận trọng và không bịa nguồn." },
-      { role: "user", content: prompt }
-    ],
-    max_completion_tokens: 900
-  });
-  const draft = String(result?.response || result?.output_text || "").trim();
+  let result;
+  try {
+    result = await env.AI.run("@cf/google/gemma-4-26b-a4b-it", {
+      messages: [
+        { role: "system", content: "Bạn là trợ lý học tập chính xác, thận trọng và không bịa nguồn." },
+        { role: "user", content: prompt }
+      ],
+      max_completion_tokens: 900
+    });
+  } catch (error) {
+    return json({ error: "Dịch vụ AI đang bận hoặc chưa khả dụng. Vui lòng thử lại sau." }, 502);
+  }
+  const draft = String(
+    result?.response ||
+    result?.output_text ||
+    result?.choices?.[0]?.message?.content ||
+    result?.result?.response ||
+    ""
+  ).trim();
   if (!draft) return json({ error: "AI không trả về nội dung. Thử lại sau." }, 502);
 
   await env.DB.prepare(
