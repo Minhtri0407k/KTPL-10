@@ -27,6 +27,12 @@ export async function onRequestPost({ request, env }) {
   if (!name || !question) return json({ error: "Vui lòng nhập tên và câu hỏi." }, 400);
   if (question.length < 5) return json({ error: "Câu hỏi cần có ít nhất 5 ký tự." }, 400);
 
+  // Prevent accidental repeated submissions without collecting or storing IP addresses.
+  const duplicate = await env.DB.prepare(
+    "SELECT id FROM questions WHERE lower(trim(question)) = lower(trim(?)) AND created_at >= datetime('now', '-90 seconds') LIMIT 1"
+  ).bind(question).first();
+  if (duplicate) return json({ error: "Câu hỏi này vừa được gửi. Hãy chờ một chút trước khi gửi lại." }, 429);
+
   const result = await env.DB.prepare(
     "INSERT INTO questions (name, class_name, question) VALUES (?, ?, ?)"
   ).bind(name, className, question).run();
