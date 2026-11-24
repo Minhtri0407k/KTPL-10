@@ -117,7 +117,6 @@
 
       <section class="tab-panel hidden" id="list-panel">
         <div class="section-head"><div><h2>Danh sách câu hỏi</h2><div class="subtle" id="count-label">Đang tải câu hỏi…</div></div><div class="admin-tools"><button class="secondary" id="zoom-list-btn" type="button" aria-pressed="false">⛶ Phóng to</button><button class="secondary" id="refresh-btn" type="button">Làm mới</button></div></div>
-        <div class="detail-panel hidden" id="question-detail" aria-live="polite"></div>
         <div class="list" id="question-list"><div class="empty">Đang tải dữ liệu…</div></div>
       </section>
 
@@ -197,8 +196,7 @@
             <article class="term-card"><h4>14. Kế hoạch dài hạn</h4><p>Kế hoạch hướng đến mục tiêu cần nhiều thời gian chuẩn bị và tích lũy.</p></article>
             <article class="term-card"><h4>15. Kiểm soát tài chính</h4><p>Theo dõi, đối chiếu thu – chi thực tế với kế hoạch và điều chỉnh khi cần thiết.</p></article>
             <article class="term-card"><h4>16. Ưu tiên chi tiêu</h4><p>Sắp xếp các khoản cần chi theo mức độ quan trọng, đáp ứng nhu cầu thiết yếu trước khi dùng tiền cho mong muốn khác.</p></article>
-          </div>
-          <div class="empty hidden" id="term-empty">Không tìm thấy thuật ngữ phù hợp.</div>
+          </div>          <div class="empty hidden" id="term-empty">Không tìm thấy thuật ngữ phù hợp.</div>
         </div>
 
         <div class="lesson-view hidden" id="lesson-situations">
@@ -298,9 +296,13 @@
     function setPublicTab(tab) {
       const panels = { ask: "ask-panel", list: "list-panel", lesson: "lesson-panel" };
       Object.entries(panels).forEach(([key, id]) => {
-        $(id).classList.toggle("hidden", key !== tab);
-        $("tab-" + key).classList.toggle("active", key === tab);
-        $("tab-" + key).setAttribute("aria-selected", String(key === tab));
+        const panel = $(id);
+        const button = $("tab-" + key);
+        if (panel) panel.classList.toggle("hidden", key !== tab);
+        if (button) {
+          button.classList.toggle("active", key === tab);
+          button.setAttribute("aria-selected", String(key === tab));
+        }
       });
     }
     $("tab-ask").addEventListener("click", () => setPublicTab("ask"));
@@ -329,9 +331,8 @@
 
 
     function renderQuestionDetail(q) {
-      const detail = $("question-detail");
-      detail.replaceChildren();
-      detail.classList.remove("hidden");
+      const detail = el("article", "detail-panel");
+      detail.setAttribute("aria-live", "polite");
       const close = el("button", "secondary detail-close", "Đóng ✕");
       close.type = "button";
       close.addEventListener("click", () => {
@@ -361,26 +362,28 @@
         answerBlock.append(el("div", "detail-content", "Câu trả lời sẽ hiển thị tại đây sau khi được quản trị viên kiểm tra và duyệt."));
       }
       detail.append(answerBlock);
-      detail.scrollIntoView({ behavior: "smooth", block: "start" });
+      return detail;
     }
 
     function renderPublic() {
       const list = $("question-list");
-      const detail = $("question-detail");
+      const count = $("count-label");
+      if (!list || !count) return;
       list.replaceChildren();
-      detail.classList.add("hidden");
-      $("count-label").textContent = publicQuestions.length + " câu hỏi";
+      count.textContent = publicQuestions.length + " câu hỏi";
       if (!publicQuestions.length) {
         selectedQuestionId = null;
         list.append(el("div", "empty", "Chưa có câu hỏi nào. Hãy là người đặt câu hỏi đầu tiên nhé!"));
         return;
       }
-      const selected = publicQuestions.find(q => String(q.id) === String(selectedQuestionId));
-      if (!selected) selectedQuestionId = null;
+      if (!publicQuestions.some(q => String(q.id) === String(selectedQuestionId))) {
+        selectedQuestionId = null;
+      }
       publicQuestions.forEach((q, index) => {
-        if (selected && String(q.id) === String(selected.id)) {
-          renderQuestionDetail(q);
+        if (selectedQuestionId !== null && String(q.id) === String(selectedQuestionId)) {
+          const detail = renderQuestionDetail(q);
           list.append(detail);
+          detail.scrollIntoView({ behavior: "smooth", block: "start" });
           return;
         }
         const card = el("button", "question-row", "");
@@ -398,19 +401,21 @@
         bottom.append(el("span", "meta", q.created_at ? dateLabel(q.created_at) : ""));
         card.append(bottom);
         card.addEventListener("click", () => {
-          selectedQuestionId = q.id;
+          selectedQuestionId = String(selectedQuestionId) === String(q.id) ? null : q.id;
           renderPublic();
         });
         list.append(card);
       });
     }
     async function loadPublic() {
+      const list = $("question-list");
+      if (!list) return;
       try {
         const data = await api("/api/questions");
-        publicQuestions = data.questions || [];
+        publicQuestions = Array.isArray(data.questions) ? data.questions : [];
         renderPublic();
       } catch (error) {
-        $("question-list").replaceChildren(el("div", "empty", error.message));
+        list.replaceChildren(el("div", "empty", error.message));
       }
     }
 
@@ -442,6 +447,7 @@
     const zoomListButton = $("zoom-list-btn");
     const listPanel = $("list-panel");
     function setListPresentation(enabled) {
+      if (!listPanel || !zoomListButton) return;
       listPanel.classList.toggle("presentation-mode", enabled);
       document.body.classList.toggle("presentation-active", enabled);
       zoomListButton.setAttribute("aria-pressed", String(enabled));
@@ -597,8 +603,7 @@
         top.append(el("span", "pill " + (q.answer_status === "approved" ? "ok" : q.answer_status === "draft" ? "wait" : ""), q.answer_status || "pending"));
         card.append(top);
         card.append(el("p", "", q.question));
-        const draft = document.createElement("textarea");
-        draft.className = "draft";
+        const draft = document.createElement("textarea");        draft.className = "draft";
         draft.value = q.answer_draft || q.answer || "";
         draft.setAttribute("aria-label", "Bản nháp câu trả lời");
         card.append(draft);
@@ -798,4 +803,3 @@
     loadPublic();
   </script>
 </body>
-</html>
