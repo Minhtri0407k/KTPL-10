@@ -334,7 +334,10 @@
       detail.classList.remove("hidden");
       const close = el("button", "secondary detail-close", "Đóng ✕");
       close.type = "button";
-      close.addEventListener("click", () => detail.classList.add("hidden"));
+      close.addEventListener("click", () => {
+        selectedQuestionId = null;
+        renderPublic();
+      });
       detail.append(close);
       const questionNumber = publicQuestions.findIndex(item => String(item.id) === String(q.id)) + 1;
       detail.append(el("div", "qnum", "CHI TIẾT CÂU HỎI #" + (questionNumber > 0 ? questionNumber : 1)));
@@ -363,14 +366,23 @@
 
     function renderPublic() {
       const list = $("question-list");
+      const detail = $("question-detail");
       list.replaceChildren();
+      detail.classList.add("hidden");
       $("count-label").textContent = publicQuestions.length + " câu hỏi";
       if (!publicQuestions.length) {
+        selectedQuestionId = null;
         list.append(el("div", "empty", "Chưa có câu hỏi nào. Hãy là người đặt câu hỏi đầu tiên nhé!"));
-        $("question-detail").classList.add("hidden");
         return;
       }
+      const selected = publicQuestions.find(q => String(q.id) === String(selectedQuestionId));
+      if (!selected) selectedQuestionId = null;
       publicQuestions.forEach((q, index) => {
+        if (selected && String(q.id) === String(selected.id)) {
+          renderQuestionDetail(q);
+          list.append(detail);
+          return;
+        }
         const card = el("button", "question-row", "");
         card.type = "button";
         card.setAttribute("aria-label", "Xem chi tiết câu hỏi " + (index + 1));
@@ -387,13 +399,10 @@
         card.append(bottom);
         card.addEventListener("click", () => {
           selectedQuestionId = q.id;
-          renderQuestionDetail(q);
+          renderPublic();
         });
         list.append(card);
       });
-      const selected = publicQuestions.find(q => String(q.id) === String(selectedQuestionId));
-      if (selected) renderQuestionDetail(selected);
-      else $("question-detail").classList.add("hidden");
     }
     async function loadPublic() {
       try {
