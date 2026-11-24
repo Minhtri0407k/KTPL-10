@@ -594,15 +594,59 @@
           regenerate.addEventListener("click", () => runGenerate(true, regenerate));
         }
         const review = el("button", "secondary", "🔎 Kiểm tra chất lượng");
+        const regenerateFromReview = el("button", "secondary", "↻ Soạn lại theo góp ý");
+        regenerateFromReview.classList.add("hidden");
+        regenerateFromReview.addEventListener("click", async () => {
+          if (!reviewResult.dataset.feedback) {
+            note.className = "error";
+            note.textContent = "Hãy kiểm tra chất lượng trước để có góp ý chỉnh sửa.";
+            return;
+          }
+          regenerateFromReview.disabled = true;
+          note.className = "notice";
+          note.textContent = "Đang soạn lại câu trả lời theo các điểm cần sửa và đề xuất…";
+          try {
+            const result = await api("/api/answer", {
+              method: "POST",
+              body: JSON.stringify({
+                action: "generate",
+                id: q.id,
+                force: true,
+                review_feedback: reviewResult.dataset.feedback,
+                previous_answer: draft.value
+              })
+            });
+            draft.value = result.draft || "";
+            note.className = "success";
+            note.textContent = "Đã soạn lại theo góp ý. Hãy kiểm tra chất lượng lần nữa trước khi duyệt.";
+            reviewResult.dataset.feedback = "";
+            reviewResult.textContent = "Góp ý trước đã được dùng để soạn lại. Bấm “Kiểm tra chất lượng” để đánh giá phiên bản mới.";
+            regenerateFromReview.classList.add("hidden");
+            await loadStats();
+          } catch (error) {
+            note.className = "error";
+            note.textContent = error.message;
+          } finally {
+            regenerateFromReview.disabled = false;
+          }
+        });
         review.addEventListener("click", async () => {
           review.disabled = true;
+          regenerateFromReview.classList.add("hidden");
+          reviewResult.dataset.feedback = "";
           reviewResult.classList.remove("hidden");
           reviewResult.textContent = "Đang kiểm tra độ đầy đủ, chính xác và cách diễn đạt…";
           try {
             const result = await api("/api/answer", { method: "POST", body: JSON.stringify({ action: "review", id: q.id, answer: draft.value }) });
-            reviewResult.textContent = result.review || "Không có nhận xét.";
-          } catch (error) { reviewResult.textContent = error.message; }
-          finally { review.disabled = false; }
+            const feedbackText = result.review || "";
+            reviewResult.textContent = feedbackText || "Không có nhận xét.";
+            if (feedbackText) {
+              reviewResult.dataset.feedback = feedbackText;
+              regenerateFromReview.classList.remove("hidden");
+            }
+          } catch (error) {
+            reviewResult.textContent = error.message;
+          } finally { review.disabled = false; }
         });
         const approve = el("button", "", "Duyệt & công khai");
         approve.addEventListener("click", async () => {
@@ -642,7 +686,7 @@
           try { await api("/api/questions", { method: "DELETE", body: JSON.stringify({ id: q.id }) }); await Promise.all([loadAdmin(), loadPublic()]); }
           catch (error) { note.className = "error"; note.textContent = error.message; }
         });
-        tools.append(generate); if (regenerate) tools.append(regenerate); tools.append(review, approve, remove);
+        tools.append(generate); if (regenerate) tools.append(regenerate); tools.append(review, regenerateFromReview, approve, remove);
         card.append(tools, direct);
         list.append(card);
       });
