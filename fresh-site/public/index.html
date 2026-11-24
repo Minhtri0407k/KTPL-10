@@ -20,6 +20,26 @@
     .example{margin-top:13px;border:1px solid #dce5ff;border-radius:12px;background:#f8faff;overflow:hidden}.example summary{cursor:pointer;list-style:none;padding:11px 13px;font-weight:800;color:#315cf5;display:flex;justify-content:space-between;align-items:center}.example summary::-webkit-details-marker{display:none}.example summary:after{content:"＋";font-size:18px}.example[open] summary:after{content:"−"}.example-body{padding:2px 13px 12px;border-top:1px solid #e4eaff}.example-body p{margin:9px 0}.steps{display:grid;gap:9px;margin-top:12px}.step{border-left:3px solid #315cf5;background:#f7f8fc;padding:10px 12px;border-radius:0 10px 10px 0}.step p{margin:4px 0 0;color:#536078}.lesson-note{margin-top:15px;padding:15px 17px;border-radius:14px;background:#eaf0ff;color:#263d86}.lesson-source{font-size:12px;color:var(--muted);margin:12px 2px 0}
     @media(max-width:520px){.lesson-intro{padding:20px}.lesson-card{padding:16px}}
 
+
+    .lesson-subtabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 15px;padding:5px;background:#e9edf7;border-radius:14px}
+    .lesson-subtab{flex:1;min-width:145px;background:transparent;color:#536078;padding:11px 12px;border-radius:10px}
+    .lesson-subtab.active{background:#fff;color:var(--blue);box-shadow:0 2px 8px rgba(25,38,70,.08)}
+    .lesson-view{margin-bottom:18px}.lesson-tools{display:flex;justify-content:space-between;align-items:end;gap:14px;margin:8px 0 14px}
+    .lesson-tools h3{margin:0 0 3px}.lesson-tools p{margin:0}.lesson-tools input{max-width:280px}
+    .dictionary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+    .term-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px;box-shadow:var(--shadow)}
+    .term-card h4{margin:0 0 6px;color:var(--blue);font-size:15px}.term-card p{margin:0;color:#46536a}
+    .situation-intro{background:#eef3ff;border:1px solid #dce5ff;color:#34466f;border-radius:13px;padding:14px 16px;margin-bottom:16px}
+    .situation-group{margin:18px 0}.situation-group h3{font-size:17px;margin:0 0 10px}
+    .situation-card{background:#fff;border:1px solid var(--line);border-radius:14px;margin:9px 0;overflow:hidden;box-shadow:var(--shadow)}
+    .situation-card summary{cursor:pointer;list-style:none;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .situation-card summary::-webkit-details-marker{display:none}.situation-card summary:after{content:"＋";font-size:19px;color:var(--blue);font-weight:800}
+    .situation-card[open] summary:after{content:"−"}.situation-tag{font-size:11px;white-space:nowrap;color:#315cf5;background:#eef3ff;border-radius:30px;padding:4px 8px;font-weight:750}
+    .situation-body{padding:4px 15px 15px;border-top:1px solid var(--line);color:#354158}
+    .situation-body p{margin:10px 0}.situation-body ol{padding-left:22px;margin:6px 0}.situation-body li{margin:5px 0}
+    .lesson-takeaway{background:#f0f7f3;border-left:3px solid #25865a;border-radius:0 9px 9px 0;padding:10px 12px;margin-top:13px!important}
+    @media(max-width:600px){.dictionary-grid{grid-template-columns:1fr}.lesson-tools{display:block}.lesson-tools input{max-width:none;margin-top:10px;width:100%}.lesson-subtab{min-width:100%;flex:1}.situation-card summary{align-items:flex-start;flex-wrap:wrap}.situation-tag{order:2}.situation-card summary:after{margin-left:auto}}
+
     .tabs{display:flex;gap:10px;margin:18px 0 14px;padding:5px;background:#e9edf7;border-radius:14px}
     .tab{flex:1;background:transparent;color:#536078;padding:12px 14px;border-radius:10px}
     .tab.active{background:#fff;color:var(--blue);box-shadow:0 2px 8px rgba(25,38,70,.08)}
@@ -77,71 +97,118 @@
         <div class="list" id="question-list"><div class="empty">Đang tải dữ liệu…</div></div>
       </section>
 
+      
       <section class="tab-panel hidden" id="lesson-panel">
         <div class="lesson-intro">
           <div class="eyebrow">Chủ đề 6 · Giáo dục Kinh tế và Pháp luật 10</div>
           <h2>Bài 10: Lập kế hoạch tài chính cá nhân</h2>
-          <p>Hệ thống hóa kiến thức trọng tâm theo SGK Kết nối tri thức với cuộc sống. Bấm vào “Ví dụ minh họa” để xem tình huống vận dụng.</p>
+          <p>Ôn tập kiến thức trọng tâm, tra cứu thuật ngữ và khám phá cách xử lý những tình huống tài chính gần gũi trong cuộc sống.</p>
         </div>
-        <div class="lesson-list">
-          <article class="lesson-card">
-            <div class="lesson-kicker">01 · Khái niệm</div>
-            <h3>Kế hoạch tài chính cá nhân là gì?</h3>
-            <p>Là bản kế hoạch về thu nhập, chi tiêu, tiết kiệm và sử dụng tiền của mỗi người nhằm thực hiện những mục tiêu tài chính trong một khoảng thời gian nhất định.</p>
-            <details class="example"><summary>Ví dụ minh họa (2)</summary><div class="example-body">
-              <p><b>Ví dụ 1:</b> Một bạn đặt mục tiêu tiết kiệm 300.000 đồng trong 3 tháng để mua sách, dự kiến dành 100.000 đồng mỗi tháng.</p>
-              <p><b>Ví dụ 2:</b> Một học sinh ghi lại tiền tiêu vặt nhận được và các khoản đã chi để biết mình còn bao nhiêu tiền cho những ngày tiếp theo.</p>
-            </div></details>
-          </article>
-          <article class="lesson-card">
-            <div class="lesson-kicker">02 · Phân loại</div>
-            <h3>Các loại kế hoạch tài chính cá nhân</h3>
-            <p>Xét theo thời gian thực hiện, có kế hoạch tài chính cá nhân <b>ngắn hạn, trung hạn và dài hạn</b>. Thời gian cụ thể có thể linh hoạt tùy mục tiêu và điều kiện của mỗi người.</p>
-            <details class="example"><summary>Ví dụ minh họa (2)</summary><div class="example-body">
-              <p><b>Ví dụ 1 – Ngắn hạn:</b> Tiết kiệm tiền mua một quyển sách trong vài tuần.</p>
-              <p><b>Ví dụ 2 – Trung hạn hoặc dài hạn:</b> Dành dụm tiền trong nhiều tháng để mua xe đạp phục vụ việc đi học.</p>
-            </div></details>
-          </article>
-          <article class="lesson-card">
-            <div class="lesson-kicker">03 · Ý nghĩa</div>
-            <h3>Tầm quan trọng của việc lập kế hoạch</h3>
-            <ul>
-              <li>Giúp tính toán, cân nhắc và ưu tiên các khoản chi cần thiết cho đời sống, học tập.</li>
-              <li>Chủ động nắm tình hình tài chính để điều chỉnh phù hợp.</li>
-              <li>Hạn chế lãng phí, thâm hụt hoặc nợ nần; tạo khoản tiết kiệm cho mục tiêu tương lai.</li>
-              <li>Góp phần giúp mỗi người tự chủ hơn trong cuộc sống.</li>
-            </ul>
-            <details class="example"><summary>Ví dụ minh họa (2)</summary><div class="example-body">
-              <p><b>Ví dụ 1:</b> Nhờ ghi chép chi tiêu, một bạn nhận ra mình mua đồ ăn vặt quá thường xuyên và điều chỉnh để dành tiền mua dụng cụ học tập.</p>
-              <p><b>Ví dụ 2:</b> Một bạn dự trù một khoản cho chi phí đi lại, nhờ đó không sử dụng hết tiền vào những món đồ chưa cần thiết.</p>
-            </div></details>
-          </article>
-          <article class="lesson-card">
-            <div class="lesson-kicker">04 · Thực hiện</div>
-            <h3>Các bước lập kế hoạch tài chính cá nhân</h3>
-            <div class="steps">
-              <div class="step"><b>Bước 1. Xác định mục tiêu tài chính và thời hạn thực hiện</b><p>Làm rõ muốn đạt điều gì, cần bao nhiêu tiền và khi nào cần hoàn thành.</p></div>
-              <div class="step"><b>Bước 2. Theo dõi và kiểm soát thu, chi cá nhân</b><p>Ghi chép các khoản thu, khoản chi; phân biệt nhu cầu thiết yếu và không thiết yếu.</p></div>
-              <div class="step"><b>Bước 3. Thiết lập quy tắc thu, chi cá nhân</b><p>Phân bổ tiền hợp lí, bảo đảm chi tiêu phù hợp với số tiền hiện có và mục tiêu đã đặt ra.</p></div>
-              <div class="step"><b>Bước 4. Tuân thủ kế hoạch tài chính cá nhân</b><p>Thực hiện theo kế hoạch; nếu thu nhập, nhu cầu hoặc tình hình thực tế thay đổi thì xem xét điều chỉnh.</p></div>
-            </div>
-            <details class="example"><summary>Ví dụ minh họa (2)</summary><div class="example-body">
-              <p><b>Ví dụ 1:</b> Muốn mua balô giá 360.000 đồng sau 3 tháng, một bạn xác định cần để dành trung bình 120.000 đồng mỗi tháng, sau khi đã tính các khoản chi cần thiết.</p>
-              <p><b>Ví dụ 2:</b> Một bạn ghi lại tiền tiêu vặt và chi tiêu hằng ngày, đặt giới hạn cho khoản mua sắm không thiết yếu rồi kiểm tra cuối tuần để điều chỉnh.</p>
-            </div></details>
-          </article>
-          <article class="lesson-card">
-            <div class="lesson-kicker">05 · Vận dụng</div>
-            <h3>Kiểm soát tài chính cá nhân</h3>
-            <p>Thường xuyên theo dõi việc thực hiện kế hoạch, so sánh khoản thu và chi thực tế với dự kiến. Khi có khoản chi phát sinh hoặc điều kiện thay đổi, cần điều chỉnh hợp lí; không nên tiết kiệm bằng cách cắt giảm những khoản thiết yếu ảnh hưởng đến sức khỏe và học tập.</p>
-            <details class="example"><summary>Ví dụ minh họa (2)</summary><div class="example-body">
-              <p><b>Ví dụ 1:</b> Nếu tháng này phát sinh tiền mua sách học tập, bạn có thể giảm một khoản mua sắm chưa cần thiết để cân đối lại.</p>
-              <p><b>Ví dụ 2:</b> Nếu khoản tiết kiệm đặt ra khiến bạn không đủ tiền ăn sáng hoặc đi học, cần điều chỉnh kế hoạch thay vì bỏ qua nhu cầu thiết yếu.</p>
-            </div></details>
-          </article>
+        <nav class="lesson-subtabs" aria-label="Nội dung Bài 10">
+          <button class="lesson-subtab active" type="button" data-lesson-view="theory">▤ Kiến thức bài học</button>
+          <button class="lesson-subtab" type="button" data-lesson-view="dictionary">⌕ Từ điển thuật ngữ</button>
+          <button class="lesson-subtab" type="button" data-lesson-view="situations">◇ Tình huống thực tế</button>
+        </nav>
+
+        <div class="lesson-view" id="lesson-theory">
+          <div class="lesson-list">
+            <article class="lesson-card">
+              <div class="lesson-kicker">01 · Khái niệm</div>
+              <h3>Kế hoạch tài chính cá nhân là gì?</h3>
+              <p>Là bản kế hoạch về thu nhập, chi tiêu, tiết kiệm và sử dụng tiền của mỗi người nhằm thực hiện những mục tiêu tài chính trong một khoảng thời gian nhất định.</p>
+            </article>
+            <article class="lesson-card">
+              <div class="lesson-kicker">02 · Phân loại</div>
+              <h3>Các loại kế hoạch tài chính cá nhân</h3>
+              <p>Xét theo thời gian thực hiện, có kế hoạch tài chính cá nhân <b>ngắn hạn, trung hạn và dài hạn</b>. Thời gian cụ thể có thể linh hoạt tùy mục tiêu và điều kiện của mỗi người.</p>
+            </article>
+            <article class="lesson-card">
+              <div class="lesson-kicker">03 · Ý nghĩa</div>
+              <h3>Tầm quan trọng của việc lập kế hoạch</h3>
+              <ul>
+                <li>Giúp tính toán, cân nhắc và ưu tiên các khoản chi cần thiết cho đời sống, học tập.</li>
+                <li>Chủ động nắm tình hình tài chính để điều chỉnh phù hợp.</li>
+                <li>Hạn chế lãng phí, thâm hụt hoặc nợ nần; tạo khoản tiết kiệm cho mục tiêu tương lai.</li>
+                <li>Góp phần giúp mỗi người tự chủ hơn trong cuộc sống.</li>
+              </ul>
+            </article>
+            <article class="lesson-card">
+              <div class="lesson-kicker">04 · Thực hiện</div>
+              <h3>Các bước lập kế hoạch tài chính cá nhân</h3>
+              <div class="steps">
+                <div class="step"><b>Bước 1. Xác định mục tiêu tài chính và thời hạn thực hiện</b><p>Làm rõ muốn đạt điều gì, cần bao nhiêu tiền và khi nào cần hoàn thành.</p></div>
+                <div class="step"><b>Bước 2. Theo dõi và kiểm soát thu, chi cá nhân</b><p>Ghi chép các khoản thu, khoản chi; phân biệt nhu cầu thiết yếu và không thiết yếu.</p></div>
+                <div class="step"><b>Bước 3. Thiết lập quy tắc thu, chi cá nhân</b><p>Phân bổ tiền hợp lí, bảo đảm chi tiêu phù hợp với số tiền hiện có và mục tiêu đã đặt ra.</p></div>
+                <div class="step"><b>Bước 4. Tuân thủ kế hoạch tài chính cá nhân</b><p>Thực hiện theo kế hoạch; nếu thu nhập, nhu cầu hoặc tình hình thực tế thay đổi thì xem xét điều chỉnh.</p></div>
+              </div>
+            </article>
+            <article class="lesson-card">
+              <div class="lesson-kicker">05 · Vận dụng</div>
+              <h3>Kiểm soát tài chính cá nhân</h3>
+              <p>Thường xuyên theo dõi việc thực hiện kế hoạch, so sánh khoản thu và chi thực tế với dự kiến. Khi có khoản chi phát sinh hoặc điều kiện thay đổi, cần điều chỉnh hợp lí; không nên tiết kiệm bằng cách cắt giảm những khoản thiết yếu ảnh hưởng đến sức khỏe và học tập.</p>
+            </article>
+          </div>
+          <div class="lesson-note"><b>Ghi nhớ:</b> Lập kế hoạch tài chính cá nhân cần có mục tiêu rõ ràng, theo dõi thu – chi, quy tắc phù hợp và sự kiên trì thực hiện. Kế hoạch nên được điều chỉnh khi hoàn cảnh thay đổi.</div>
         </div>
-        <div class="lesson-note"><b>Ghi nhớ:</b> Lập kế hoạch tài chính cá nhân cần có mục tiêu rõ ràng, theo dõi thu – chi, quy tắc phù hợp và sự kiên trì thực hiện. Kế hoạch nên được điều chỉnh khi hoàn cảnh thay đổi.</div>
-        <div class="lesson-source">Nội dung tóm tắt và diễn đạt lại theo SGK Giáo dục Kinh tế và Pháp luật 10 – Kết nối tri thức với cuộc sống, Bài 10.</div>
+
+        <div class="lesson-view hidden" id="lesson-dictionary">
+          <div class="lesson-tools">
+            <div><h3>Từ điển thuật ngữ tài chính</h3><p class="subtle">Tra cứu những khái niệm thường gặp trong Bài 10 bằng cách tìm từ khóa.</p></div>
+            <input id="term-search" type="search" placeholder="Tìm thuật ngữ..." aria-label="Tìm thuật ngữ">
+          </div>
+          <div class="dictionary-grid" id="dictionary-list">
+            <article class="term-card"><h4>1. Tài chính cá nhân</h4><p>Việc quản lý tiền bạc của một cá nhân, bao gồm thu nhập, chi tiêu, tiết kiệm và các mục tiêu sử dụng tiền.</p></article>
+            <article class="term-card"><h4>2. Kế hoạch tài chính cá nhân</h4><p>Bản dự định về cách sử dụng và quản lý tiền trong một khoảng thời gian để đạt mục tiêu cụ thể.</p></article>
+            <article class="term-card"><h4>3. Thu nhập</h4><p>Khoản tiền một người nhận được từ các nguồn hợp pháp, chẳng hạn tiền tiêu vặt, tiền thưởng hoặc tiền công từ công việc phù hợp.</p></article>
+            <article class="term-card"><h4>4. Chi tiêu</h4><p>Khoản tiền được sử dụng để đáp ứng nhu cầu trong cuộc sống như ăn uống, đi lại, học tập hoặc giải trí.</p></article>
+            <article class="term-card"><h4>5. Tiết kiệm</h4><p>Phần tiền được giữ lại, chưa sử dụng ngay, nhằm dự phòng hoặc phục vụ mục tiêu trong tương lai.</p></article>
+            <article class="term-card"><h4>6. Ngân sách cá nhân</h4><p>Bảng dự kiến các khoản thu và chi trong một khoảng thời gian, giúp mỗi người chủ động phân bổ tiền.</p></article>
+            <article class="term-card"><h4>7. Mục tiêu tài chính</h4><p>Điều cụ thể muốn đạt được bằng tiền, thường đi kèm số tiền cần có và thời hạn hoàn thành.</p></article>
+            <article class="term-card"><h4>8. Chi phí thiết yếu</h4><p>Khoản chi cần thiết để đáp ứng nhu cầu cơ bản hoặc phục vụ học tập, sức khỏe và sinh hoạt.</p></article>
+            <article class="term-card"><h4>9. Chi phí không thiết yếu</h4><p>Khoản chi có thể cân nhắc, trì hoãn hoặc cắt giảm khi ngân sách hạn chế mà không ảnh hưởng đến nhu cầu cơ bản.</p></article>
+            <article class="term-card"><h4>10. Thâm hụt ngân sách</h4><p>Tình trạng tổng chi lớn hơn tổng thu trong một khoảng thời gian.</p></article>
+            <article class="term-card"><h4>11. Dự phòng tài chính</h4><p>Khoản tiền dành riêng để ứng phó với những việc phát sinh hoặc nhu cầu bất ngờ.</p></article>
+            <article class="term-card"><h4>12. Kế hoạch ngắn hạn</h4><p>Kế hoạch hướng đến mục tiêu có thể thực hiện trong thời gian tương đối ngắn.</p></article>
+            <article class="term-card"><h4>13. Kế hoạch trung hạn</h4><p>Kế hoạch có thời gian thực hiện dài hơn ngắn hạn, cần tích lũy và theo dõi qua nhiều giai đoạn.</p></article>
+            <article class="term-card"><h4>14. Kế hoạch dài hạn</h4><p>Kế hoạch hướng đến mục tiêu cần nhiều thời gian chuẩn bị và tích lũy.</p></article>
+            <article class="term-card"><h4>15. Kiểm soát tài chính</h4><p>Theo dõi, đối chiếu thu – chi thực tế với kế hoạch và điều chỉnh khi cần thiết.</p></article>
+            <article class="term-card"><h4>16. Ưu tiên chi tiêu</h4><p>Sắp xếp các khoản cần chi theo mức độ quan trọng, đáp ứng nhu cầu thiết yếu trước khi dùng tiền cho mong muốn khác.</p></article>
+          </div>
+          <div class="empty hidden" id="term-empty">Không tìm thấy thuật ngữ phù hợp.</div>
+        </div>
+
+        <div class="lesson-view hidden" id="lesson-situations">
+          <div class="situation-intro"><b>Cách sử dụng:</b> Chọn một nhóm tình huống, sau đó bấm vào từng tình huống để xem phân tích, hướng giải quyết và bài học rút ra. Các tình huống dưới đây là ví dụ giả định gần gũi với học sinh.</div>
+
+          <section class="situation-group">
+            <h3>Ⅰ. Lập mục tiêu và kế hoạch</h3>
+            <details class="situation-card"><summary><span><b>Tình huống 1.</b> Muốn mua một món đồ nhưng chưa biết tiết kiệm thế nào</span><span class="situation-tag">Lập mục tiêu</span></summary><div class="situation-body"><p><b>Tình huống:</b> An muốn mua một chiếc balô để chuẩn bị cho năm học mới. An có một khoản tiền tiêu vặt hằng tuần nhưng thường dùng gần hết.</p><p><b>Phân tích:</b> An đã có mục tiêu nhưng chưa xác định số tiền cần có, thời hạn và khoản có thể tiết kiệm.</p><p><b>Cách giải quyết:</b></p><ol><li>Tìm hiểu giá chiếc balô và xác định số tiền cần chuẩn bị.</li><li>Chọn thời hạn phù hợp với khả năng tài chính.</li><li>Ghi lại tiền nhận được và các khoản chi; dành một phần hợp lí sau khi đáp ứng nhu cầu cần thiết.</li><li>Theo dõi tiến độ và điều chỉnh nếu kế hoạch quá sức.</li></ol><p class="lesson-takeaway"><b>Bài học:</b> Mục tiêu cần cụ thể, có thời hạn và phù hợp với khả năng thực tế.</p></div></details>
+            <details class="situation-card"><summary><span><b>Tình huống 2.</b> Đặt mục tiêu tiết kiệm quá cao</span><span class="situation-tag">Mục tiêu thực tế</span></summary><div class="situation-body"><p><b>Tình huống:</b> Bình muốn tiết kiệm gần như toàn bộ tiền tiêu vặt mỗi tuần để mua thiết bị mới, nhưng sau đó không đủ tiền cho việc đi lại và đồ dùng học tập.</p><p><b>Phân tích:</b> Kế hoạch chưa cân đối giữa mục tiêu tiết kiệm và nhu cầu thiết yếu.</p><p><b>Cách giải quyết:</b></p><ol><li>Xác định lại các khoản cần thiết trước.</li><li>Tính số tiền còn lại có thể tiết kiệm.</li><li>Kéo dài thời hạn hoặc chọn mục tiêu có chi phí phù hợp hơn.</li><li>Trao đổi với gia đình nếu cần hỗ trợ và được đồng ý.</li></ol><p class="lesson-takeaway"><b>Bài học:</b> Không nên theo đuổi mục tiêu bằng cách bỏ qua nhu cầu thiết yếu.</p></div></details>
+            <details class="situation-card"><summary><span><b>Tình huống 3.</b> Không biết nên ưu tiên mục tiêu nào</span><span class="situation-tag">Ưu tiên</span></summary><div class="situation-body"><p><b>Tình huống:</b> Chi muốn vừa mua sách tham khảo phục vụ học tập, vừa mua một món đồ giải trí. Số tiền hiện có không đủ cho cả hai.</p><p><b>Phân tích:</b> Chi cần phân biệt nhu cầu cần ưu tiên với mong muốn có thể trì hoãn.</p><p><b>Cách giải quyết:</b> Xem xét mức độ cần thiết, thời điểm cần sử dụng và lợi ích của từng khoản; ưu tiên sách nếu phục vụ việc học trước mắt, còn món đồ giải trí có thể lên kế hoạch tiết kiệm sau.</p><p class="lesson-takeaway"><b>Bài học:</b> Biết sắp xếp thứ tự ưu tiên giúp sử dụng tiền hợp lí.</p></div></details>
+          </section>
+
+          <section class="situation-group">
+            <h3>Ⅱ. Quản lý thu nhập và chi tiêu</h3>
+            <details class="situation-card"><summary><span><b>Tình huống 4.</b> Cuối tuần luôn hết tiền</span><span class="situation-tag">Theo dõi thu – chi</span></summary><div class="situation-body"><p><b>Tình huống:</b> Hằng tuần, Minh nhận được tiền tiêu vặt nhưng thường không nhớ đã sử dụng vào những việc gì và thường hết tiền trước cuối tuần.</p><p><b>Phân tích:</b> Minh chưa theo dõi các khoản chi nên khó nhận ra khoản nào đang chiếm nhiều tiền.</p><p><b>Cách giải quyết:</b> Ghi lại từng khoản chi trong một tuần; chia thành nhóm cần thiết và chưa cần thiết; đặt giới hạn phù hợp cho từng nhóm; cuối tuần đối chiếu với số tiền đã nhận.</p><p class="lesson-takeaway"><b>Bài học:</b> Ghi chép thu – chi là cơ sở để kiểm soát ngân sách.</p></div></details>
+            <details class="situation-card"><summary><span><b>Tình huống 5.</b> Bạn bè rủ mua đồ theo trào lưu</span><span class="situation-tag">Quyết định chi tiêu</span></summary><div class="situation-body"><p><b>Tình huống:</b> Nhóm bạn cùng mua một món đồ đang thịnh hành. Huy cũng muốn mua dù món đồ không thật sự cần và số tiền dự định dùng đã dành cho mục tiêu khác.</p><p><b>Phân tích:</b> Huy đang có nguy cơ chi tiêu theo cảm xúc hoặc áp lực từ bạn bè.</p><p><b>Cách giải quyết:</b> Tạm dừng trước khi mua; tự hỏi món đồ có cần thiết không, có phù hợp ngân sách không; cân nhắc lợi ích lâu dài và có thể lịch sự từ chối nếu chưa phù hợp.</p><p class="lesson-takeaway"><b>Bài học:</b> Quyết định chi tiêu nên dựa trên nhu cầu và khả năng của bản thân, không phải chạy theo số đông.</p></div></details>
+            <details class="situation-card"><summary><span><b>Tình huống 6.</b> Phát hiện chi tiêu vượt dự kiến</span><span class="situation-tag">Điều chỉnh ngân sách</span></summary><div class="situation-body"><p><b>Tình huống:</b> Sau khi xem lại ghi chép, Lan nhận ra tiền mua đồ ăn vặt và các món nhỏ đã vượt mức dự kiến trong tháng.</p><p><b>Phân tích:</b> Một số khoản nhỏ khi cộng lại có thể tạo thành khoản chi đáng kể.</p><p><b>Cách giải quyết:</b> Xác định nhóm chi vượt mức; giảm những khoản chưa cần thiết trong thời gian tới; đặt giới hạn chi phù hợp và tiếp tục theo dõi, không cắt giảm ăn uống hay nhu cầu học tập thiết yếu.</p><p class="lesson-takeaway"><b>Bài học:</b> Cần kiểm tra tổng chi, không chỉ nhìn từng khoản riêng lẻ.</p></div></details>
+            <details class="situation-card"><summary><span><b>Tình huống 7.</b> Có khoản tiền bất ngờ</span><span class="situation-tag">Quản lý thu nhập</span></summary><div class="situation-body"><p><b>Tình huống:</b> Mai được người thân tặng một khoản tiền vào dịp sinh nhật và muốn sử dụng ngay toàn bộ số tiền đó.</p><p><b>Phân tích:</b> Khoản tiền bất ngờ vẫn cần được cân nhắc và phân bổ theo mục tiêu.</p><p><b>Cách giải quyết:</b> Cân nhắc giữ lại một phần để tiết kiệm, dành một phần cho nhu cầu phù hợp và trao đổi với gia đình nếu chưa biết cách quản lý khoản tiền lớn.</p><p class="lesson-takeaway"><b>Bài học:</b> Khi có thêm tiền, vẫn cần lập kế hoạch thay vì chi tiêu tùy hứng.</p></div></details>
+          </section>
+
+          <section class="situation-group">
+            <h3>Ⅲ. Xử lý tình huống phát sinh</h3>
+            <details class="situation-card"><summary><span><b>Tình huống 8.</b> Phát sinh khoản chi học tập</span><span class="situation-tag">Chi phí phát sinh</span></summary><div class="situation-body"><p><b>Tình huống:</b> Nam đang tiết kiệm để mua một món đồ cá nhân thì giáo viên thông báo cần chuẩn bị tài liệu học tập.</p><p><b>Phân tích:</b> Khoản học tập cần được ưu tiên hơn mục tiêu mua sắm chưa cấp thiết.</p><p><b>Cách giải quyết:</b> Cập nhật khoản chi mới vào kế hoạch; điều chỉnh số tiền tiết kiệm hoặc thời hạn mua món đồ; trao đổi với gia đình nếu khoản chi vượt khả năng.</p><p class="lesson-takeaway"><b>Bài học:</b> Kế hoạch tài chính cần linh hoạt trước những nhu cầu chính đáng phát sinh.</p></div></details>
+            <details class="situation-card"><summary><span><b>Tình huống 9.</b> Kế hoạch không còn phù hợp</span><span class="situation-tag">Điều chỉnh kế hoạch</span></summary><div class="situation-body"><p><b>Tình huống:</b> Phúc dự định tiết kiệm một khoản cố định mỗi tuần, nhưng gần đây lịch học và chi phí đi lại thay đổi khiến mức tiết kiệm cũ không còn phù hợp.</p><p><b>Phân tích:</b> Phúc cần điều chỉnh kế hoạch theo hoàn cảnh mới, không nên cố giữ con số cũ một cách máy móc.</p><p><b>Cách giải quyết:</b> Tính lại các khoản thu – chi hiện tại; xác định số tiền có thể dành dụm; điều chỉnh thời hạn hoặc mục tiêu và trao đổi với gia đình khi cần.</p><p class="lesson-takeaway"><b>Bài học:</b> Kế hoạch tốt là kế hoạch thực tế và có thể điều chỉnh.</p></div></details>
+            <details class="situation-card"><summary><span><b>Tình huống 10.</b> Tiền dự phòng được sử dụng</span><span class="situation-tag">Dự phòng</span></summary><div class="situation-body"><p><b>Tình huống:</b> Vy đã dành một khoản dự phòng nhưng phải dùng một phần cho đồ dùng học tập bị hỏng.</p><p><b>Phân tích:</b> Sử dụng tiền dự phòng cho nhu cầu phát sinh hợp lí không phải là thất bại của kế hoạch.</p><p><b>Cách giải quyết:</b> Ghi nhận khoản đã sử dụng; xem xét mức dự phòng còn lại; sau đó bổ sung dần khi điều kiện cho phép và điều chỉnh các mục tiêu khác nếu cần.</p><p class="lesson-takeaway"><b>Bài học:</b> Dự phòng giúp chủ động hơn trước những thay đổi bất ngờ.</p></div></details>
+          </section>
+
+          <section class="situation-group">
+            <h3>Ⅳ. Đánh giá và lựa chọn cách ứng xử</h3>
+            <details class="situation-card"><summary><span><b>Tình huống 11.</b> Mượn tiền để mua món đồ chưa cần thiết</span><span class="situation-tag">Trách nhiệm tài chính</span></summary><div class="situation-body"><p><b>Tình huống:</b> Một người bạn rủ Khoa mượn tiền để mua phụ kiện đang giảm giá dù Khoa chưa có kế hoạch trả và món đồ không cần thiết.</p><p><b>Phân tích:</b> Mua sắm không cấp thiết bằng tiền vay có thể tạo áp lực trả nợ và làm mất cân đối tài chính.</p><p><b>Cách giải quyết:</b> Khoa nên cân nhắc từ chối việc vay để mua món đồ chưa cần; nếu đã có khoản vay thì cần trao đổi rõ ràng với gia đình/người cho vay và lập kế hoạch hoàn trả phù hợp, không vay thêm để bù khoản cũ.</p><p class="lesson-takeaway"><b>Bài học:</b> Cần cân nhắc khả năng chi trả và trách nhiệm trước khi vay mượn.</p></div></details>
+            <details class="situation-card"><summary><span><b>Tình huống 12.</b> Hai người có cách chi tiêu khác nhau</span><span class="situation-tag">Tôn trọng lựa chọn</span></summary><div class="situation-body"><p><b>Tình huống:</b> Một bạn thích dành phần lớn tiền để tiết kiệm, trong khi bạn khác muốn dùng một phần cho hoạt động giải trí phù hợp.</p><p><b>Phân tích:</b> Hoàn cảnh, mục tiêu và nhu cầu mỗi người khác nhau nên kế hoạch tài chính không nhất thiết giống nhau.</p><p><b>Cách giải quyết:</b> Mỗi người tự cân đối ngân sách, bảo đảm nhu cầu thiết yếu và mục tiêu đã đặt ra; trao đổi tôn trọng, không chê bai hay ép buộc người khác theo cách chi tiêu của mình.</p><p class="lesson-takeaway"><b>Bài học:</b> Kế hoạch tài chính cần phù hợp với hoàn cảnh và mục tiêu của từng cá nhân.</p></div></details>
+          </section>
+        </div>
+        <div class="lesson-source">Nội dung kiến thức được tóm tắt, diễn đạt lại theo SGK Giáo dục Kinh tế và Pháp luật 10 – Kết nối tri thức với cuộc sống. Các tình huống là ví dụ giả định dùng để luyện tập vận dụng, không phải tình huống trích từ SGK.</div>
       </section>
 
     </main>
@@ -215,6 +282,27 @@
     $("tab-ask").addEventListener("click", () => setPublicTab("ask"));
     $("tab-list").addEventListener("click", () => setPublicTab("list"));
     $("tab-lesson").addEventListener("click", () => setPublicTab("lesson"));
+
+    document.querySelectorAll("[data-lesson-view]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const view = button.dataset.lessonView;
+        document.querySelectorAll("[data-lesson-view]").forEach((item) => item.classList.toggle("active", item === button));
+        ["theory", "dictionary", "situations"].forEach((name) => {
+          $("lesson-" + name).classList.toggle("hidden", name !== view);
+        });
+      });
+    });
+    $("term-search").addEventListener("input", () => {
+      const query = $("term-search").value.trim().toLocaleLowerCase("vi");
+      let visible = 0;
+      document.querySelectorAll(".term-card").forEach((card) => {
+        const match = card.textContent.toLocaleLowerCase("vi").includes(query);
+        card.classList.toggle("hidden", !match);
+        if (match) visible++;
+      });
+      $("term-empty").classList.toggle("hidden", visible !== 0);
+    });
+
 
     function renderQuestionDetail(q) {
       const detail = $("question-detail");
