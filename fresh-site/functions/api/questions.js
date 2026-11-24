@@ -10,8 +10,8 @@ export async function onRequestGet({ request, env }) {
   if (admin && !isAdmin(request, env)) return json({ error: "Không có quyền quản trị." }, 401);
 
   const sql = admin
-    ? "SELECT id, name, class_name, question, answer, answer_draft, sources_json, answer_status, answered_directly, created_at FROM questions ORDER BY id DESC LIMIT 300"
-    : "SELECT id, name, class_name, question, CASE WHEN answer_status = 'approved' THEN answer ELSE '' END AS answer, answer_status, answered_directly, created_at FROM questions ORDER BY id DESC LIMIT 200";
+    ? "SELECT id, name, class_name, question, answer, answer_draft, sources_json, answer_status, answered_directly, created_at FROM (SELECT id, name, class_name, question, answer, answer_draft, sources_json, answer_status, answered_directly, created_at FROM questions ORDER BY id DESC LIMIT 300) ORDER BY id ASC"
+    : "SELECT id, name, class_name, question, CASE WHEN answer_status = 'approved' THEN answer ELSE '' END AS answer, answer_status, answered_directly, created_at FROM (SELECT id, name, class_name, question, CASE WHEN answer_status = 'approved' THEN answer ELSE '' END AS answer, answer_status, answered_directly, created_at FROM questions ORDER BY id DESC LIMIT 200) ORDER BY id ASC";
   const result = await env.DB.prepare(sql).all();
   return json({ questions: result.results || [] });
 }
