@@ -338,12 +338,12 @@
       detail.append(questionBlock);
       const answerBlock = el("div", "detail-block");
       answerBlock.append(el("div", "detail-label", "Câu trả lời"));
-      if (q.answer_status === "approved" && q.answer) {
+      if (q.answered_directly) {
+        answerBlock.append(el("span", "pill ok", "Đã trả lời và đã giải thích trực tiếp"));
+        answerBlock.append(el("div", "detail-content", "Câu hỏi đã được trả lời và giải thích trực tiếp trên lớp."));
+      } else if (q.answer_status === "approved" && q.answer) {
         answerBlock.append(el("span", "pill ok", "Đã duyệt"));
         answerBlock.append(el("div", "detail-content", q.answer));
-      } else if (q.answered_directly) {
-        answerBlock.append(el("span", "pill ok", "Đã trao đổi trực tiếp"));
-        answerBlock.append(el("div", "detail-content", "Câu hỏi đã được trao đổi trực tiếp trên lớp."));
       } else {
         answerBlock.append(el("span", "pill wait", "Đang chờ phản hồi"));
         answerBlock.append(el("div", "detail-content", "Câu trả lời sẽ hiển thị tại đây sau khi được quản trị viên kiểm tra và duyệt."));
@@ -367,7 +367,7 @@
         card.setAttribute("aria-label", "Xem chi tiết câu hỏi " + (index + 1));
         const top = el("div", "qtop");
         top.append(el("span", "qnum", "CÂU HỎI #" + (index + 1)));
-        top.append(el("span", "pill " + (q.answer_status === "approved" ? "ok" : "wait"), q.answer_status === "approved" ? "Đã có trả lời" : "Đang chờ phản hồi"));
+        top.append(el("span", "pill " + (q.answered_directly || q.answer_status === "approved" ? "ok" : "wait"), q.answered_directly ? "Đã trả lời và đã giải thích trực tiếp" : q.answer_status === "approved" ? "Đã có trả lời" : "Đang chờ phản hồi"));
         card.append(top);
         card.append(el("h3", "", q.question));
         const bottom = el("div", "row-bottom");
@@ -619,35 +619,23 @@
         const check = document.createElement("input");
         check.type = "checkbox"; check.checked = Boolean(q.answered_directly);
         check.addEventListener("change", async () => {
-          if (check.checked) {
-            const directAnswer = prompt("Nhập nội dung câu trả lời đã trao đổi trực tiếp để hiển thị trên website:");
-            if (directAnswer === null || directAnswer.trim().length < 5) {
-              check.checked = false;
-              if (directAnswer !== null) { note.className = "error"; note.textContent = "Câu trả lời cần ít nhất 5 ký tự."; }
-              return;
-            }
-            try {
-              await api("/api/questions", { method: "PUT", body: JSON.stringify({ id: q.id, answered_directly: true, answer: directAnswer.trim() }) });
-              note.className = "success";
-              note.textContent = "Đã lưu câu trả lời trực tiếp và công khai trên website.";
-              await Promise.all([loadAdmin(), loadPublic(), loadStats()]);
-            } catch (error) {
-              check.checked = false;
-              note.className = "error";
-              note.textContent = error.message;
-            }
-          } else {
-            try {
-              await api("/api/questions", { method: "PUT", body: JSON.stringify({ id: q.id, answered_directly: false }) });
-              await Promise.all([loadPublic(), loadStats()]);
-            } catch (error) {
-              check.checked = true;
-              note.className = "error";
-              note.textContent = error.message;
-            }
+          check.disabled = true;
+          try {
+            await api("/api/questions", { method: "PUT", body: JSON.stringify({ id: q.id, answered_directly: check.checked }) });
+            note.className = "success";
+            note.textContent = check.checked
+              ? "Đã đánh dấu: đã trả lời và đã giải thích trực tiếp."
+              : "Đã bỏ đánh dấu trả lời trực tiếp.";
+            await Promise.all([loadAdmin(), loadPublic(), loadStats()]);
+          } catch (error) {
+            check.checked = !check.checked;
+            note.className = "error";
+            note.textContent = error.message;
+          } finally {
+            check.disabled = false;
           }
         });
-        direct.append(check, document.createTextNode(" Đã trả lời trực tiếp (nhập nội dung để công khai)"));
+        direct.append(check, document.createTextNode(" Đã trả lời và đã giải thích trực tiếp"));
         const remove = el("button", "danger", "Xóa câu hỏi");
         remove.addEventListener("click", async () => {
           if (!confirm("Xóa câu hỏi này? Thao tác không thể hoàn tác.")) return;
