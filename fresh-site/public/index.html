@@ -437,10 +437,35 @@
         const check = document.createElement("input");
         check.type = "checkbox"; check.checked = Boolean(q.answered_directly);
         check.addEventListener("change", async () => {
-          try { await api("/api/questions", { method: "PUT", body: JSON.stringify({ id: q.id, answered_directly: check.checked }) }); await Promise.all([loadPublic(), loadStats()]); }
-          catch (error) { note.className = "error"; note.textContent = error.message; }
+          if (check.checked) {
+            const directAnswer = prompt("Nhập nội dung câu trả lời đã trao đổi trực tiếp để hiển thị trên website:");
+            if (directAnswer === null || directAnswer.trim().length < 5) {
+              check.checked = false;
+              if (directAnswer !== null) { note.className = "error"; note.textContent = "Câu trả lời cần ít nhất 5 ký tự."; }
+              return;
+            }
+            try {
+              await api("/api/questions", { method: "PUT", body: JSON.stringify({ id: q.id, answered_directly: true, answer: directAnswer.trim() }) });
+              note.className = "success";
+              note.textContent = "Đã lưu câu trả lời trực tiếp và công khai trên website.";
+              await Promise.all([loadAdmin(), loadPublic(), loadStats()]);
+            } catch (error) {
+              check.checked = false;
+              note.className = "error";
+              note.textContent = error.message;
+            }
+          } else {
+            try {
+              await api("/api/questions", { method: "PUT", body: JSON.stringify({ id: q.id, answered_directly: false }) });
+              await Promise.all([loadPublic(), loadStats()]);
+            } catch (error) {
+              check.checked = true;
+              note.className = "error";
+              note.textContent = error.message;
+            }
+          }
         });
-        direct.append(check, document.createTextNode(" Đã trả lời trực tiếp trên lớp"));
+        direct.append(check, document.createTextNode(" Đã trả lời trực tiếp (nhập nội dung để công khai)"));
         const remove = el("button", "danger", "Xóa câu hỏi");
         remove.addEventListener("click", async () => {
           if (!confirm("Xóa câu hỏi này? Thao tác không thể hoàn tác.")) return;
