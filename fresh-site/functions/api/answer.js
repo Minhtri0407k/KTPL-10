@@ -2,6 +2,33 @@ const json = (data, status = 200) => Response.json(data, { status });
 const isAdmin = (request, env) =>
   Boolean(env.ADMIN_TOKEN) && request.headers.get("Authorization") === `Bearer ${env.ADMIN_TOKEN}`;
 
+function extractText(value, depth = 0) {
+  if (depth > 5 || value == null) return "";
+  if (typeof value === "string") return value.trim();
+  if (Array.isArray(value)) return value.map(item => extractText(item, depth + 1)).filter(Boolean).join("\\n").trim();
+  if (typeof value !== "object") return "";
+  const directKeys = ["response", "output_text", "generated_text", "completion", "text", "content"];
+  for (const key of directKeys) {
+    const found = extractText(value[key], depth + 1);
+    if (found) return found;
+  }
+  if (Array.isArray(value.choices)) {
+    const found = value.choices.map(choice =>
+      extractText(choice?.message?.content ?? choice?.text ?? choice?.delta?.content, depth + 1)
+    ).filter(Boolean).join("\\n").trim();
+    if (found) return found;
+  }
+  if (Array.isArray(value.output)) {
+    const found = extractText(value.output, depth + 1);
+    if (found) return found;
+  }
+  if (value.result && typeof value.result === "object") {
+    const found = extractText(value.result, depth + 1);
+    if (found) return found;
+  }
+  return "";
+}
+
 async function searchWeb(query, apiKey) {
   if (!apiKey) return [];
   const response = await fetch("https://api.tavily.com/search", {
@@ -88,18 +115,15 @@ export async function onRequestPost({ request, env }) {
         { role: "system", content: "Bạn là trợ lý học tập chính xác, thận trọng và không bịa nguồn." },
         { role: "user", content: prompt }
       ],
-      max_completion_tokens: 900
+      // Gemma 4 supports explicit disabling of its internal thinking mode.
+      // This leaves the output budget for the student-facing answer.
+      chat_template_kwargs: { enable_thinking: false },
+      max_completion_tokens: 1200
     });
   } catch (error) {
     return json({ error: "Dịch vụ AI đang bận hoặc chưa khả dụng. Vui lòng thử lại sau." }, 502);
   }
-  const draft = String(
-    result?.response ||
-    result?.output_text ||
-    result?.choices?.[0]?.message?.content ||
-    result?.result?.response ||
-    ""
-  ).trim();
+  const draft = extractText(result);
   if (!draft) return json({ error: "AI không trả về nội dung. Thử lại sau." }, 502);
 
   await env.DB.prepare(
