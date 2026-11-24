@@ -196,7 +196,7 @@ export async function onRequestPost({ request, env }) {
       { role: "user", content: userPrompt }
     ], 1500);
 
-    // One targeted repair pass for empty, truncated, or incomplete situational drafts.
+    // Keep responses concise and direct; one targeted repair pass for incomplete drafts.
     if (needsCompletion(question.question, draft)) {
       const repair = [
         "Bản nháp trước chưa đạt yêu cầu hoặc còn thiếu phần trả lời.",
