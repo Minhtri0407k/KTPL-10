@@ -72,7 +72,7 @@ export async function onRequestPost({ request, env }) {
   const id = Number(body.id);
   if (!Number.isInteger(id) || id < 1) return json({ error: "ID câu hỏi không hợp lệ." }, 400);
   const question = await env.DB.prepare(
-    "SELECT id, question, answer, answer_draft, answer_status FROM questions WHERE id = ?"
+    "SELECT id, question, answer, answer_draft, sources_json, answer_status FROM questions WHERE id = ?"
   ).bind(id).first();
   if (!question) return json({ error: "Không tìm thấy câu hỏi." }, 404);
 
@@ -94,8 +94,8 @@ export async function onRequestPost({ request, env }) {
     return json({
       ok: true,
       draft: question.answer_draft,
-      sources: [],
-      search_note: "Đã tải bản nháp đã lưu để tiết kiệm lượt AI. Chọn tạo lại nếu muốn AI soạn phiên bản mới.",
+      sources: (() => { try { return JSON.parse(question.sources_json || "[]"); } catch { return []; } })(),
+      search_note: "Đã tải bản nháp đã lưu để tiết kiệm lượt AI. Có thể chọn tạo lại nếu muốn AI soạn phiên bản mới.",
       cached: true
     });
   }
