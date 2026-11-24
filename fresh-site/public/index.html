@@ -357,7 +357,7 @@
           try {
             await api("/api/answer", { method: "POST", body: JSON.stringify({ action: "approve", id: q.id, answer: draft.value }) });
             note.className = "success"; note.textContent = "Đã duyệt và công khai câu trả lời.";
-            await Promise.all([loadAdmin(), loadPublic()]);
+            await Promise.all([loadAdmin(), loadPublic(), loadStats()]);
           } catch (error) { note.className = "error"; note.textContent = error.message; }
           finally { approve.disabled = false; }
         });
@@ -366,7 +366,7 @@
         const check = document.createElement("input");
         check.type = "checkbox"; check.checked = Boolean(q.answered_directly);
         check.addEventListener("change", async () => {
-          try { await api("/api/questions", { method: "PUT", body: JSON.stringify({ id: q.id, answered_directly: check.checked }) }); await loadPublic(); }
+          try { await api("/api/questions", { method: "PUT", body: JSON.stringify({ id: q.id, answered_directly: check.checked }) }); await Promise.all([loadPublic(), loadStats()]); }
           catch (error) { note.className = "error"; note.textContent = error.message; }
         });
         direct.append(check, document.createTextNode(" Đã trả lời trực tiếp trên lớp"));
