@@ -12,6 +12,21 @@
     .wrap{width:min(980px,calc(100% - 32px));margin:auto}.top{padding:24px 0 10px;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:850;letter-spacing:-.4px}.brand span{color:var(--blue)}.subtle{color:var(--muted);font-size:13px}
     .hero{margin:18px 0 22px;padding:30px;border-radius:24px;background:linear-gradient(130deg,#18264b,#315cf5);color:white;box-shadow:var(--shadow)}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;opacity:.8;font-weight:800}.hero h1{font-size:clamp(28px,5vw,42px);line-height:1.13;margin:10px 0}.hero p{max-width:650px;color:#e4eaff;margin:0}
     .grid{display:grid;grid-template-columns:1fr 1.1fr;gap:18px;align-items:start}.panel,.question{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}h2{font-size:18px;line-height:1.3;margin:0 0 6px}.field{display:grid;gap:6px;margin:14px 0}.field label{font-size:13px;font-weight:750;color:#465168}.field input,.field textarea,.draft{width:100%;border:1px solid #dfe4ee;border-radius:12px;padding:11px 12px;background:#fff;color:var(--ink);outline:none}.field input:focus,.field textarea:focus,.draft:focus{border-color:var(--blue);box-shadow:0 0 0 3px #315cf51a}.field textarea{min-height:118px;resize:vertical}.full{width:100%}.notice{font-size:12px;color:var(--muted);margin:10px 0 0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:0 0 12px}.list{display:grid;gap:12px}.question{padding:17px}.qtop{display:flex;justify-content:space-between;gap:12px;align-items:center}.qnum{font-size:12px;color:var(--blue);font-weight:850}.meta{font-size:12px;color:var(--muted)}.question h3{font-size:15px;margin:9px 0 10px;white-space:pre-wrap;overflow-wrap:anywhere}.answer{border-top:1px solid var(--line);padding-top:12px;margin-top:12px;white-space:pre-wrap;overflow-wrap:anywhere}.pill{display:inline-flex;align-items:center;border-radius:99px;padding:3px 9px;font-size:11px;font-weight:800;background:#f0f2f6;color:#596273}.pill.ok{background:#e7f6ee;color:var(--green)}.pill.wait{background:#fff4df;color:#8b5a00}.empty{border:1px dashed #d6dce8;border-radius:16px;padding:25px;text-align:center;color:var(--muted);background:#fff}.admin{margin:24px 0}.admin-toggle{background:#e9edfa;color:#33405c}.admin-box{display:none;margin-top:12px}.admin-box.open{display:block}.admin-tools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.secondary{background:#edf1ff;color:#2546c5}.danger{background:#fff0ef;color:var(--red)}.success{color:var(--green);font-size:13px}.error{color:var(--red);font-size:13px}.sources{font-size:12px;color:var(--muted);padding-left:18px}.sources a{color:#315cf5;overflow-wrap:anywhere}.admin-card{border:1px solid var(--line);border-radius:15px;padding:15px;margin:12px 0;background:#fff}.admin-card .draft{min-height:140px;margin-top:10px;resize:vertical}.split{display:grid;grid-template-columns:1fr 1fr;gap:12px}.hidden{display:none!important}.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.stat{background:#f6f8ff;border:1px solid var(--line);border-radius:12px;padding:12px}.stat b{display:block;font-size:24px;line-height:1.25;color:var(--blue)}.stat span{font-size:12px;color:var(--muted)}.review-result{white-space:pre-wrap;background:#f7f8fc;border:1px solid var(--line);padding:12px;border-radius:12px;margin-top:10px;font-size:13px}
+    .tabs{display:flex;gap:10px;margin:18px 0 14px;padding:5px;background:#e9edf7;border-radius:14px}
+    .tab{flex:1;background:transparent;color:#536078;padding:12px 14px;border-radius:10px}
+    .tab.active{background:#fff;color:var(--blue);box-shadow:0 2px 8px rgba(25,38,70,.08)}
+    .tab-panel{margin-bottom:20px}
+    .question-row{width:100%;text-align:left;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:15px;padding:15px;box-shadow:var(--shadow)}
+    .question-row:hover{border-color:#b8c7ff}
+    .question-row h3{font-size:15px;margin:8px 0;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+    .question-row .row-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+    .detail-panel{background:#fff;border:1px solid #cfd8f5;border-radius:18px;padding:18px;margin:0 0 14px;box-shadow:var(--shadow)}
+    .detail-title{font-size:18px;font-weight:850;margin:10px 0}
+    .detail-block{margin-top:14px;padding-top:13px;border-top:1px solid var(--line)}
+    .detail-label{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+    .detail-content{white-space:pre-wrap;overflow-wrap:anywhere;margin-top:5px}
+    .detail-close{float:right;padding:7px 11px}
+    @media(max-width:520px){.tabs{gap:5px}.tab{font-size:13px;padding:11px 7px}.detail-panel{padding:14px}}
     @media(max-width:760px){.grid{grid-template-columns:1fr}.hero{padding:24px}.top{align-items:flex-start}.split{grid-template-columns:1fr}}
   </style>
 </head>
@@ -28,23 +43,28 @@
       <p>Gửi thắc mắc về nội dung bài học. Câu trả lời sẽ được kiểm tra trước khi hiển thị để mọi người cùng tham khảo.</p>
     </section>
 
-    <main class="grid">
-      <section class="panel">
-        <h2>Gửi câu hỏi</h2>
+    <nav class="tabs" aria-label="Các mục hỏi đáp">
+      <button class="tab active" id="tab-ask" type="button" aria-selected="true">＋ Đặt câu hỏi</button>
+      <button class="tab" id="tab-list" type="button" aria-selected="false">☷ Danh sách câu hỏi</button>
+    </nav>
+    <main>
+      <section class="panel tab-panel" id="ask-panel">
+        <h2>Đặt câu hỏi</h2>
         <div class="subtle">Điền thông tin và viết rõ điều ông/bạn đang thắc mắc.</div>
         <form id="ask-form">
           <div class="split">
-            <div class="field"><label for="student-name">Tên người gửi</label><input id="student-name" maxlength="80" required placeholder="Ví dụ: Minh Trí"></div>
-            <div class="field"><label for="student-class">Lớp</label><input id="student-class" maxlength="30" placeholder="Ví dụ: 10TN1"></div>
+            <div class="field"><label for="student-name">Tên người hỏi</label><input id="student-name" maxlength="80" required placeholder="Ví dụ: Minh Trí"></div>
+            <div class="field"><label for="student-class">Lớp</label><input id="student-class" maxlength="30" required placeholder="Ví dụ: 10TN1"></div>
           </div>
           <div class="field"><label for="student-question">Nội dung câu hỏi</label><textarea id="student-question" maxlength="2000" required placeholder="Nhập câu hỏi của bạn..."></textarea></div>
           <button class="full" id="send-btn" type="submit">Gửi câu hỏi</button>
-          <div id="form-message" class="notice" aria-live="polite">Câu hỏi sẽ được hiển thị sau khi gửi thành công.</div>
+          <div id="form-message" class="notice" aria-live="polite">Câu hỏi sẽ xuất hiện trong danh sách sau khi gửi thành công.</div>
         </form>
       </section>
 
-      <section>
-        <div class="section-head"><div><h2>Câu hỏi của lớp</h2><div class="subtle" id="count-label">Đang tải câu hỏi…</div></div><button class="secondary" id="refresh-btn" type="button">Làm mới</button></div>
+      <section class="tab-panel hidden" id="list-panel">
+        <div class="section-head"><div><h2>Danh sách câu hỏi</h2><div class="subtle" id="count-label">Đang tải câu hỏi…</div></div><button class="secondary" id="refresh-btn" type="button">Làm mới</button></div>
+        <div class="detail-panel hidden" id="question-detail" aria-live="polite"></div>
         <div class="list" id="question-list"><div class="empty">Đang tải dữ liệu…</div></div>
       </section>
     </main>
@@ -85,6 +105,7 @@
     let publicQuestions = [];
     let lessons = [];
     let selectedLessonId = "";
+    let selectedQuestionId = null;
 
     async function api(path, options = {}) {
       const headers = Object.assign({ "content-type": "application/json" }, options.headers || {});
@@ -106,32 +127,81 @@
       const d = new Date(value.replace(" ", "T") + (value.endsWith("Z") ? "" : "Z"));
       return Number.isNaN(d.getTime()) ? value : d.toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" });
     }
+    function setPublicTab(tab) {
+      const isAsk = tab === "ask";
+      $("ask-panel").classList.toggle("hidden", !isAsk);
+      $("list-panel").classList.toggle("hidden", isAsk);
+      $("tab-ask").classList.toggle("active", isAsk);
+      $("tab-list").classList.toggle("active", !isAsk);
+      $("tab-ask").setAttribute("aria-selected", String(isAsk));
+      $("tab-list").setAttribute("aria-selected", String(!isAsk));
+    }
+    $("tab-ask").addEventListener("click", () => setPublicTab("ask"));
+    $("tab-list").addEventListener("click", () => setPublicTab("list"));
+
+    function renderQuestionDetail(q) {
+      const detail = $("question-detail");
+      detail.replaceChildren();
+      detail.classList.remove("hidden");
+      const close = el("button", "secondary detail-close", "Đóng ✕");
+      close.type = "button";
+      close.addEventListener("click", () => detail.classList.add("hidden"));
+      detail.append(close);
+      detail.append(el("div", "qnum", "CHI TIẾT CÂU HỎI #" + q.id));
+      detail.append(el("div", "detail-title", q.question));
+      const person = el("div", "meta", "Người hỏi: " + (q.name || "Ẩn danh") + " · Lớp: " + (q.class_name || "Chưa cung cấp") + (q.created_at ? " · " + dateLabel(q.created_at) : ""));
+      detail.append(person);
+      const questionBlock = el("div", "detail-block");
+      questionBlock.append(el("div", "detail-label", "Nội dung câu hỏi"));
+      questionBlock.append(el("div", "detail-content", q.question));
+      detail.append(questionBlock);
+      const answerBlock = el("div", "detail-block");
+      answerBlock.append(el("div", "detail-label", "Câu trả lời"));
+      if (q.answer_status === "approved" && q.answer) {
+        answerBlock.append(el("span", "pill ok", "Đã duyệt"));
+        answerBlock.append(el("div", "detail-content", q.answer));
+      } else if (q.answered_directly) {
+        answerBlock.append(el("span", "pill ok", "Đã trao đổi trực tiếp"));
+        answerBlock.append(el("div", "detail-content", "Câu hỏi đã được trao đổi trực tiếp trên lớp."));
+      } else {
+        answerBlock.append(el("span", "pill wait", "Đang chờ phản hồi"));
+        answerBlock.append(el("div", "detail-content", "Câu trả lời sẽ hiển thị tại đây sau khi được quản trị viên kiểm tra và duyệt."));
+      }
+      detail.append(answerBlock);
+      detail.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
     function renderPublic() {
       const list = $("question-list");
       list.replaceChildren();
       $("count-label").textContent = publicQuestions.length + " câu hỏi";
       if (!publicQuestions.length) {
         list.append(el("div", "empty", "Chưa có câu hỏi nào. Hãy là người đặt câu hỏi đầu tiên nhé!"));
+        $("question-detail").classList.add("hidden");
         return;
       }
       publicQuestions.forEach((q, index) => {
-        const card = el("article", "question");
+        const card = el("button", "question-row", "");
+        card.type = "button";
+        card.setAttribute("aria-label", "Xem chi tiết câu hỏi " + q.id);
         const top = el("div", "qtop");
-        top.append(el("span", "qnum", "CÂU HỎI #" + (publicQuestions.length - index)));
-        const status = el("span", "pill " + (q.answer_status === "approved" ? "ok" : "wait"), q.answer_status === "approved" ? "Đã có trả lời" : "Đang chờ phản hồi");
-        top.append(status);
+        top.append(el("span", "qnum", "CÂU HỎI #" + q.id));
+        top.append(el("span", "pill " + (q.answer_status === "approved" ? "ok" : "wait"), q.answer_status === "approved" ? "Đã có trả lời" : "Đang chờ phản hồi"));
         card.append(top);
-        card.append(el("div", "meta", (q.name || "Ẩn danh") + (q.class_name ? " · " + q.class_name : "") + (q.created_at ? " · " + dateLabel(q.created_at) : "")));
         card.append(el("h3", "", q.question));
-        if (q.answered_directly) card.append(el("span", "pill ok", "Đã trao đổi trực tiếp trên lớp"));
-        if (q.answer) {
-          const answer = el("div", "answer");
-          answer.append(el("strong", "", "Trả lời"));
-          answer.append(el("div", "", q.answer));
-          card.append(answer);
-        }
+        const bottom = el("div", "row-bottom");
+        bottom.append(el("span", "meta", (q.name || "Ẩn danh") + " · " + (q.class_name || "Chưa có lớp")));
+        bottom.append(el("span", "meta", q.created_at ? dateLabel(q.created_at) : ""));
+        card.append(bottom);
+        card.addEventListener("click", () => {
+          selectedQuestionId = q.id;
+          renderQuestionDetail(q);
+        });
         list.append(card);
       });
+      const selected = publicQuestions.find(q => String(q.id) === String(selectedQuestionId));
+      if (selected) renderQuestionDetail(selected);
+      else $("question-detail").classList.add("hidden");
     }
     async function loadPublic() {
       try {
@@ -160,6 +230,7 @@
         message.className = "success";
         message.textContent = "Đã gửi câu hỏi thành công!";
         await loadPublic();
+        setPublicTab("list");
       } catch (error) {
         message.className = "error";
         message.textContent = error.message;
