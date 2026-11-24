@@ -376,7 +376,7 @@
         card.setAttribute("aria-label", "Xem chi tiết câu hỏi " + (index + 1));
         const top = el("div", "qtop");
         top.append(el("span", "qnum", "CÂU HỎI #" + (index + 1)));
-        if (q.answered_directly) top.append(el("span", "pill ok", "Đã giải thích trực tiếp"));
+        if (q.answered_directly) top.append(el("span", "pill ok", "Đã trả lời và đã giải thích trực tiếp"));
         if (q.answer_status === "approved" && q.answer) top.append(el("span", "pill ok", "Đã có câu trả lời"));
         else if (!q.answered_directly) top.append(el("span", "pill wait", "Đang chờ phản hồi"));
         card.append(top);
