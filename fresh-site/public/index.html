@@ -80,11 +80,11 @@
           <div id="login-message" class="notice" aria-live="polite"></div>
         </div>
         <div id="admin-area" class="hidden">
-          <div class="section-head"><div><h2>Quản trị câu hỏi</h2><div class="subtle">AI tạo bản nháp, có cơ chế hoàn thiện khi thiếu ý và lưu bản nháp để tiết kiệm lượt. Chỉ câu trả lời được duyệt mới công khai.</div></div><button class="danger" id="logout-btn" type="button">Đăng xuất</button></div>
+          <div class="section-head"><div><h2>Quản trị câu hỏi</h2><div class="subtle">Tạo bản nháp, tự hoàn thiện khi thiếu ý và lưu để tiện chỉnh sửa. Chỉ câu trả lời được duyệt mới công khai.</div></div><button class="danger" id="logout-btn" type="button">Đăng xuất</button></div>
           <div class="admin-tools"><button class="secondary" id="admin-refresh" type="button">Tải lại câu hỏi</button></div>
           <div class="admin-card">
             <h2>Thư viện bài học KTPL 10</h2>
-            <div class="subtle">Thêm từng bài và dán nội dung SGK/ghi chú đã kiểm chứng. AI sẽ tham khảo các bài trong thư viện; bài chưa có nội dung sẽ không bị tự điền kiến thức giả.</div>
+            <div class="subtle">Thêm từng bài và dán nội dung SGK/ghi chú đã kiểm chứng. Nội dung trong thư viện sẽ được dùng làm tài liệu tham khảo; bài chưa có nội dung sẽ không bị tự điền kiến thức giả.</div>
             <div class="field"><label for="lesson-select">Chọn bài học</label><select id="lesson-select"></select></div>
             <div class="field"><label for="lesson-title">Tên bài học</label><input id="lesson-title" maxlength="160" placeholder="Ví dụ: Bài 1: ..."></div>
             <div class="field"><label for="lesson-content">Nội dung bài học / SGK</label><textarea id="lesson-content" style="min-height:180px" placeholder="Dán nội dung bài học, khái niệm, ghi chú hoặc phần SGK đã kiểm chứng..."></textarea></div>
@@ -337,7 +337,7 @@
       try {
         const s = await api("/api/stats");
         const items = [
-          ["Tổng câu hỏi", s.total], ["Đã duyệt", s.approved], ["Bản nháp AI", s.drafts],
+          ["Tổng câu hỏi", s.total], ["Đã duyệt", s.approved], ["Bản nháp", s.drafts],
           ["Đang chờ", s.pending], ["Trả lời trực tiếp", s.answered_directly], ["Gửi hôm nay", s.today]
         ];
         grid.replaceChildren();
@@ -395,7 +395,7 @@
         card.append(reviewResult);
         const tools = el("div", "admin-tools");
         const runGenerate = async (force, button) => {
-          button.disabled = true; note.className = "notice"; note.textContent = force ? "AI đang tạo phiên bản mới…" : "Đang tải bản nháp hoặc tạo bằng AI…";
+          button.disabled = true; note.className = "notice"; note.textContent = force ? "Đang soạn phiên bản mới…" : "Đang tải bản nháp hoặc soạn câu trả lời…";
           try {
             const result = await api("/api/answer", { method: "POST", body: JSON.stringify({ action: "generate", id: q.id, force }) });
             draft.value = result.draft || "";
@@ -404,18 +404,18 @@
           } catch (error) { note.className = "error"; note.textContent = error.message; }
           finally { button.disabled = false; }
         };
-        const generate = el("button", "secondary", q.answer_draft ? "↻ Tải bản nháp đã lưu" : "✨ Tạo bản nháp AI");
+        const generate = el("button", "secondary", q.answer_draft ? "↻ Tải bản nháp đã lưu" : "＋ Soạn câu trả lời");
         generate.addEventListener("click", () => runGenerate(false, generate));
         let regenerate = null;
         if (q.answer_draft) {
-          regenerate = el("button", "secondary", "✨ Tạo lại bằng AI");
+          regenerate = el("button", "secondary", "↻ Soạn lại câu trả lời");
           regenerate.addEventListener("click", () => runGenerate(true, regenerate));
         }
         const review = el("button", "secondary", "🔎 Kiểm tra chất lượng");
         review.addEventListener("click", async () => {
           review.disabled = true;
           reviewResult.classList.remove("hidden");
-          reviewResult.textContent = "AI đang rà soát độ đầy đủ, độ chính xác và cách diễn đạt…";
+          reviewResult.textContent = "Đang kiểm tra độ đầy đủ, chính xác và cách diễn đạt…";
           try {
             const result = await api("/api/answer", { method: "POST", body: JSON.stringify({ action: "review", id: q.id, answer: draft.value }) });
             reviewResult.textContent = result.review || "Không có nhận xét.";
