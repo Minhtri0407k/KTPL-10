@@ -193,7 +193,15 @@ export async function onRequestPost({ request, env }) {
     "Không tự nhận đã tra cứu web nếu không có nguồn web thực tế."
   ].join("\n");
 
+  const reviewFeedback = String(body.review_feedback || "").trim().slice(0, 9000);
+  const previousAnswer = String(body.previous_answer || "").trim().slice(0, 12000);
   const userPrompt = [
+    ...(reviewFeedback ? [
+      "YÊU CẦU SOẠN LẠI THEO KIỂM TRA CHẤT LƯỢNG:",
+      "Đây là các nhận xét về bản trả lời trước. Hãy xử lý lần lượt mọi điểm cần sửa và đề xuất có căn cứ; bổ sung ý còn thiếu, sửa chỗ chưa rõ hoặc chưa chính xác, giữ lại những điểm tốt. Không máy móc làm theo nhận xét nếu nhận xét mâu thuẫn với kiến thức bài học; ưu tiên nội dung bài học và tính chính xác.",
+      "KẾT QUẢ KIỂM TRA CHẤT LƯỢNG:\\n" + reviewFeedback,
+      "BẢN TRẢ LỜI TRƯỚC CẦN CẢI THIỆN:\\n" + (previousAnswer || "(Không có)")
+    ] : []),
     "THƯ VIỆN BÀI HỌC KTPL 10 DO QUẢN TRỊ CUNG CẤP (ưu tiên bài phù hợp với câu hỏi):",
     "KHUNG KIẾN THỨC CẦN VẬN DỤNG KHI PHÙ HỢP:",
     "- Nếu câu hỏi thuộc Bài 10: kế hoạch tài chính cá nhân là cách xác định mục tiêu và tổ chức thu nhập, chi tiêu, tiết kiệm để đạt mục tiêu.",
