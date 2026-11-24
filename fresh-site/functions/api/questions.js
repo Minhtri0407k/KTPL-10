@@ -46,7 +46,18 @@ export async function onRequestPut({ request, env }) {
   const id = Number(body.id);
   if (!Number.isInteger(id) || id < 1) return json({ error: "ID câu hỏi không hợp lệ." }, 400);
   const answered = body.answered_directly ? 1 : 0;
-  await env.DB.prepare("UPDATE questions SET answered_directly = ? WHERE id = ?").bind(answered, id).run();
+  if (Object.prototype.hasOwnProperty.call(body, "answer")) {
+    const answer = String(body.answer || "").trim();
+    if (answered && answer.length < 5) return json({ error: "Hãy nhập nội dung câu trả lời trực tiếp (ít nhất 5 ký tự)." }, 400);
+    if (answer.length > 12000) return json({ error: "Câu trả lời vượt quá giới hạn." }, 413);
+    if (answered) {
+      await env.DB.prepare("UPDATE questions SET answered_directly = 1, answer = ?, answer_draft = ?, answer_status = 'approved' WHERE id = ?").bind(answer, answer, id).run();
+    } else {
+      await env.DB.prepare("UPDATE questions SET answered_directly = 0 WHERE id = ?").bind(id).run();
+    }
+  } else {
+    await env.DB.prepare("UPDATE questions SET answered_directly = ? WHERE id = ?").bind(answered, id).run();
+  }
   return json({ ok: true });
 }
 
