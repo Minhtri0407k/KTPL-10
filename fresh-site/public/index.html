@@ -12,6 +12,14 @@
     .wrap{width:min(980px,calc(100% - 32px));margin:auto}.top{padding:24px 0 10px;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:850;letter-spacing:-.4px}.brand span{color:var(--blue)}.subtle{color:var(--muted);font-size:13px}
     .hero{margin:18px 0 22px;padding:30px;border-radius:24px;background:linear-gradient(130deg,#18264b,#315cf5);color:white;box-shadow:var(--shadow)}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;opacity:.8;font-weight:800}.hero h1{font-size:clamp(28px,5vw,42px);line-height:1.13;margin:10px 0}.hero p{max-width:650px;color:#e4eaff;margin:0}
     .grid{display:grid;grid-template-columns:1fr 1.1fr;gap:18px;align-items:start}.panel,.question{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}h2{font-size:18px;line-height:1.3;margin:0 0 6px}.field{display:grid;gap:6px;margin:14px 0}.field label{font-size:13px;font-weight:750;color:#465168}.field input,.field textarea,.draft{width:100%;border:1px solid #dfe4ee;border-radius:12px;padding:11px 12px;background:#fff;color:var(--ink);outline:none}.field input:focus,.field textarea:focus,.draft:focus{border-color:var(--blue);box-shadow:0 0 0 3px #315cf51a}.field textarea{min-height:118px;resize:vertical}.full{width:100%}.notice{font-size:12px;color:var(--muted);margin:10px 0 0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:0 0 12px}.list{display:grid;gap:12px}.question{padding:17px}.qtop{display:flex;justify-content:space-between;gap:12px;align-items:center}.qnum{font-size:12px;color:var(--blue);font-weight:850}.meta{font-size:12px;color:var(--muted)}.question h3{font-size:15px;margin:9px 0 10px;white-space:pre-wrap;overflow-wrap:anywhere}.answer{border-top:1px solid var(--line);padding-top:12px;margin-top:12px;white-space:pre-wrap;overflow-wrap:anywhere}.pill{display:inline-flex;align-items:center;border-radius:99px;padding:3px 9px;font-size:11px;font-weight:800;background:#f0f2f6;color:#596273}.pill.ok{background:#e7f6ee;color:var(--green)}.pill.wait{background:#fff4df;color:#8b5a00}.empty{border:1px dashed #d6dce8;border-radius:16px;padding:25px;text-align:center;color:var(--muted);background:#fff}.admin{margin:24px 0}.admin-toggle{background:#e9edfa;color:#33405c}.admin-box{display:none;margin-top:12px}.admin-box.open{display:block}.admin-tools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.secondary{background:#edf1ff;color:#2546c5}.danger{background:#fff0ef;color:var(--red)}.success{color:var(--green);font-size:13px}.error{color:var(--red);font-size:13px}.sources{font-size:12px;color:var(--muted);padding-left:18px}.sources a{color:#315cf5;overflow-wrap:anywhere}.admin-card{border:1px solid var(--line);border-radius:15px;padding:15px;margin:12px 0;background:#fff}.admin-card .draft{min-height:140px;margin-top:10px;resize:vertical}.split{display:grid;grid-template-columns:1fr 1fr;gap:12px}.hidden{display:none!important}.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.stat{background:#f6f8ff;border:1px solid var(--line);border-radius:12px;padding:12px}.stat b{display:block;font-size:24px;line-height:1.25;color:var(--blue)}.stat span{font-size:12px;color:var(--muted)}.review-result{white-space:pre-wrap;background:#f7f8fc;border:1px solid var(--line);padding:12px;border-radius:12px;margin-top:10px;font-size:13px}
+
+    .lesson-intro{background:linear-gradient(130deg,#18264b,#315cf5);color:#fff;border-radius:20px;padding:24px;margin-bottom:16px;box-shadow:var(--shadow)}
+    .lesson-intro .eyebrow{color:#dbe4ff}.lesson-intro h2{font-size:clamp(22px,4vw,30px);margin:8px 0}.lesson-intro p{color:#e4eaff;margin:0;max-width:700px}
+    .lesson-list{display:grid;gap:13px}.lesson-card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:19px;box-shadow:var(--shadow)}
+    .lesson-kicker{font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:var(--blue);font-weight:850}.lesson-card h3{font-size:17px;margin:5px 0 9px}.lesson-card p{margin:8px 0}.lesson-card ul{padding-left:21px;margin:9px 0}.lesson-card li{margin:6px 0}
+    .example{margin-top:13px;border:1px solid #dce5ff;border-radius:12px;background:#f8faff;overflow:hidden}.example summary{cursor:pointer;list-style:none;padding:11px 13px;font-weight:800;color:#315cf5;display:flex;justify-content:space-between;align-items:center}.example summary::-webkit-details-marker{display:none}.example summary:after{content:"＋";font-size:18px}.example[open] summary:after{content:"−"}.example-body{padding:2px 13px 12px;border-top:1px solid #e4eaff}.example-body p{margin:9px 0}.steps{display:grid;gap:9px;margin-top:12px}.step{border-left:3px solid #315cf5;background:#f7f8fc;padding:10px 12px;border-radius:0 10px 10px 0}.step p{margin:4px 0 0;color:#536078}.lesson-note{margin-top:15px;padding:15px 17px;border-radius:14px;background:#eaf0ff;color:#263d86}.lesson-source{font-size:12px;color:var(--muted);margin:12px 2px 0}
+    @media(max-width:520px){.lesson-intro{padding:20px}.lesson-card{padding:16px}}
+
     .tabs{display:flex;gap:10px;margin:18px 0 14px;padding:5px;background:#e9edf7;border-radius:14px}
     .tab{flex:1;background:transparent;color:#536078;padding:12px 14px;border-radius:10px}
     .tab.active{background:#fff;color:var(--blue);box-shadow:0 2px 8px rgba(25,38,70,.08)}
@@ -43,9 +51,10 @@
       <p>Gửi thắc mắc về nội dung bài học. Câu trả lời sẽ được kiểm tra trước khi hiển thị để mọi người cùng tham khảo.</p>
     </section>
 
-    <nav class="tabs" aria-label="Các mục hỏi đáp">
+    <nav class="tabs" aria-label="Các mục học tập">
       <button class="tab active" id="tab-ask" type="button" aria-selected="true">＋ Đặt câu hỏi</button>
       <button class="tab" id="tab-list" type="button" aria-selected="false">☷ Danh sách câu hỏi</button>
+      <button class="tab" id="tab-lesson" type="button" aria-selected="false">▤ Kiến thức Bài 10</button>
     </nav>
     <main>
       <section class="panel tab-panel" id="ask-panel">
@@ -67,6 +76,74 @@
         <div class="detail-panel hidden" id="question-detail" aria-live="polite"></div>
         <div class="list" id="question-list"><div class="empty">Đang tải dữ liệu…</div></div>
       </section>
+
+      <section class="tab-panel hidden" id="lesson-panel">
+        <div class="lesson-intro">
+          <div class="eyebrow">Chủ đề 6 · Giáo dục Kinh tế và Pháp luật 10</div>
+          <h2>Bài 10: Lập kế hoạch tài chính cá nhân</h2>
+          <p>Hệ thống hóa kiến thức trọng tâm theo SGK Kết nối tri thức với cuộc sống. Bấm vào “Ví dụ minh họa” để xem tình huống vận dụng.</p>
+        </div>
+        <div class="lesson-list">
+          <article class="lesson-card">
+            <div class="lesson-kicker">01 · Khái niệm</div>
+            <h3>Kế hoạch tài chính cá nhân là gì?</h3>
+            <p>Là bản kế hoạch về thu nhập, chi tiêu, tiết kiệm và sử dụng tiền của mỗi người nhằm thực hiện những mục tiêu tài chính trong một khoảng thời gian nhất định.</p>
+            <details class="example"><summary>Ví dụ minh họa (2)</summary><div class="example-body">
+              <p><b>Ví dụ 1:</b> Một bạn đặt mục tiêu tiết kiệm 300.000 đồng trong 3 tháng để mua sách, dự kiến dành 100.000 đồng mỗi tháng.</p>
+              <p><b>Ví dụ 2:</b> Một học sinh ghi lại tiền tiêu vặt nhận được và các khoản đã chi để biết mình còn bao nhiêu tiền cho những ngày tiếp theo.</p>
+            </div></details>
+          </article>
+          <article class="lesson-card">
+            <div class="lesson-kicker">02 · Phân loại</div>
+            <h3>Các loại kế hoạch tài chính cá nhân</h3>
+            <p>Xét theo thời gian thực hiện, có kế hoạch tài chính cá nhân <b>ngắn hạn, trung hạn và dài hạn</b>. Thời gian cụ thể có thể linh hoạt tùy mục tiêu và điều kiện của mỗi người.</p>
+            <details class="example"><summary>Ví dụ minh họa (2)</summary><div class="example-body">
+              <p><b>Ví dụ 1 – Ngắn hạn:</b> Tiết kiệm tiền mua một quyển sách trong vài tuần.</p>
+              <p><b>Ví dụ 2 – Trung hạn hoặc dài hạn:</b> Dành dụm tiền trong nhiều tháng để mua xe đạp phục vụ việc đi học.</p>
+            </div></details>
+          </article>
+          <article class="lesson-card">
+            <div class="lesson-kicker">03 · Ý nghĩa</div>
+            <h3>Tầm quan trọng của việc lập kế hoạch</h3>
+            <ul>
+              <li>Giúp tính toán, cân nhắc và ưu tiên các khoản chi cần thiết cho đời sống, học tập.</li>
+              <li>Chủ động nắm tình hình tài chính để điều chỉnh phù hợp.</li>
+              <li>Hạn chế lãng phí, thâm hụt hoặc nợ nần; tạo khoản tiết kiệm cho mục tiêu tương lai.</li>
+              <li>Góp phần giúp mỗi người tự chủ hơn trong cuộc sống.</li>
+            </ul>
+            <details class="example"><summary>Ví dụ minh họa (2)</summary><div class="example-body">
+              <p><b>Ví dụ 1:</b> Nhờ ghi chép chi tiêu, một bạn nhận ra mình mua đồ ăn vặt quá thường xuyên và điều chỉnh để dành tiền mua dụng cụ học tập.</p>
+              <p><b>Ví dụ 2:</b> Một bạn dự trù một khoản cho chi phí đi lại, nhờ đó không sử dụng hết tiền vào những món đồ chưa cần thiết.</p>
+            </div></details>
+          </article>
+          <article class="lesson-card">
+            <div class="lesson-kicker">04 · Thực hiện</div>
+            <h3>Các bước lập kế hoạch tài chính cá nhân</h3>
+            <div class="steps">
+              <div class="step"><b>Bước 1. Xác định mục tiêu tài chính và thời hạn thực hiện</b><p>Làm rõ muốn đạt điều gì, cần bao nhiêu tiền và khi nào cần hoàn thành.</p></div>
+              <div class="step"><b>Bước 2. Theo dõi và kiểm soát thu, chi cá nhân</b><p>Ghi chép các khoản thu, khoản chi; phân biệt nhu cầu thiết yếu và không thiết yếu.</p></div>
+              <div class="step"><b>Bước 3. Thiết lập quy tắc thu, chi cá nhân</b><p>Phân bổ tiền hợp lí, bảo đảm chi tiêu phù hợp với số tiền hiện có và mục tiêu đã đặt ra.</p></div>
+              <div class="step"><b>Bước 4. Tuân thủ kế hoạch tài chính cá nhân</b><p>Thực hiện theo kế hoạch; nếu thu nhập, nhu cầu hoặc tình hình thực tế thay đổi thì xem xét điều chỉnh.</p></div>
+            </div>
+            <details class="example"><summary>Ví dụ minh họa (2)</summary><div class="example-body">
+              <p><b>Ví dụ 1:</b> Muốn mua balô giá 360.000 đồng sau 3 tháng, một bạn xác định cần để dành trung bình 120.000 đồng mỗi tháng, sau khi đã tính các khoản chi cần thiết.</p>
+              <p><b>Ví dụ 2:</b> Một bạn ghi lại tiền tiêu vặt và chi tiêu hằng ngày, đặt giới hạn cho khoản mua sắm không thiết yếu rồi kiểm tra cuối tuần để điều chỉnh.</p>
+            </div></details>
+          </article>
+          <article class="lesson-card">
+            <div class="lesson-kicker">05 · Vận dụng</div>
+            <h3>Kiểm soát tài chính cá nhân</h3>
+            <p>Thường xuyên theo dõi việc thực hiện kế hoạch, so sánh khoản thu và chi thực tế với dự kiến. Khi có khoản chi phát sinh hoặc điều kiện thay đổi, cần điều chỉnh hợp lí; không nên tiết kiệm bằng cách cắt giảm những khoản thiết yếu ảnh hưởng đến sức khỏe và học tập.</p>
+            <details class="example"><summary>Ví dụ minh họa (2)</summary><div class="example-body">
+              <p><b>Ví dụ 1:</b> Nếu tháng này phát sinh tiền mua sách học tập, bạn có thể giảm một khoản mua sắm chưa cần thiết để cân đối lại.</p>
+              <p><b>Ví dụ 2:</b> Nếu khoản tiết kiệm đặt ra khiến bạn không đủ tiền ăn sáng hoặc đi học, cần điều chỉnh kế hoạch thay vì bỏ qua nhu cầu thiết yếu.</p>
+            </div></details>
+          </article>
+        </div>
+        <div class="lesson-note"><b>Ghi nhớ:</b> Lập kế hoạch tài chính cá nhân cần có mục tiêu rõ ràng, theo dõi thu – chi, quy tắc phù hợp và sự kiên trì thực hiện. Kế hoạch nên được điều chỉnh khi hoàn cảnh thay đổi.</div>
+        <div class="lesson-source">Nội dung tóm tắt và diễn đạt lại theo SGK Giáo dục Kinh tế và Pháp luật 10 – Kết nối tri thức với cuộc sống, Bài 10.</div>
+      </section>
+
     </main>
 
     <section class="admin">
@@ -128,16 +205,16 @@
       return Number.isNaN(d.getTime()) ? value : d.toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" });
     }
     function setPublicTab(tab) {
-      const isAsk = tab === "ask";
-      $("ask-panel").classList.toggle("hidden", !isAsk);
-      $("list-panel").classList.toggle("hidden", isAsk);
-      $("tab-ask").classList.toggle("active", isAsk);
-      $("tab-list").classList.toggle("active", !isAsk);
-      $("tab-ask").setAttribute("aria-selected", String(isAsk));
-      $("tab-list").setAttribute("aria-selected", String(!isAsk));
+      const panels = { ask: "ask-panel", list: "list-panel", lesson: "lesson-panel" };
+      Object.entries(panels).forEach(([key, id]) => {
+        $(id).classList.toggle("hidden", key !== tab);
+        $("tab-" + key).classList.toggle("active", key === tab);
+        $("tab-" + key).setAttribute("aria-selected", String(key === tab));
+      });
     }
     $("tab-ask").addEventListener("click", () => setPublicTab("ask"));
     $("tab-list").addEventListener("click", () => setPublicTab("list"));
+    $("tab-lesson").addEventListener("click", () => setPublicTab("lesson"));
 
     function renderQuestionDetail(q) {
       const detail = $("question-detail");
