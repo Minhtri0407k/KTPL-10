@@ -60,7 +60,7 @@
           <div id="login-message" class="notice" aria-live="polite"></div>
         </div>
         <div id="admin-area" class="hidden">
-          <div class="section-head"><div><h2>Quản trị câu hỏi</h2><div class="subtle">AI chỉ tạo bản nháp. Chỉ câu trả lời được duyệt mới công khai.</div></div><button class="danger" id="logout-btn" type="button">Đăng xuất</button></div>
+          <div class="section-head"><div><h2>Quản trị câu hỏi</h2><div class="subtle">AI tạo bản nháp, có cơ chế hoàn thiện khi thiếu ý và lưu bản nháp để tiết kiệm lượt. Chỉ câu trả lời được duyệt mới công khai.</div></div><button class="danger" id="logout-btn" type="button">Đăng xuất</button></div>
           <div class="admin-tools"><button class="secondary" id="admin-refresh" type="button">Tải lại câu hỏi</button></div>
           <div class="field"><label for="lesson-content">Nội dung bài học / SGK làm nguồn cho AI</label><textarea id="lesson-content" placeholder="Dán nội dung bài học, khái niệm, ghi chú hoặc phần SGK cần ưu tiên..."></textarea><button class="secondary" id="save-lesson" type="button">Lưu nội dung bài học</button><div id="lesson-message" class="notice"></div></div>
           <div id="admin-list"></div>
@@ -244,17 +244,23 @@
         const note = el("div", "notice", "");
         card.append(note);
         const tools = el("div", "admin-tools");
-        const generate = el("button", "secondary", "✨ Tạo bản nháp AI");
-        generate.addEventListener("click", async () => {
-          generate.disabled = true; note.className = "notice"; note.textContent = "AI đang soạn bản nháp…";
+        const runGenerate = async (force, button) => {
+          button.disabled = true; note.className = "notice"; note.textContent = force ? "AI đang tạo phiên bản mới…" : "Đang tải bản nháp hoặc tạo bằng AI…";
           try {
-            const result = await api("/api/answer", { method: "POST", body: JSON.stringify({ action: "generate", id: q.id }) });
+            const result = await api("/api/answer", { method: "POST", body: JSON.stringify({ action: "generate", id: q.id, force }) });
             draft.value = result.draft || "";
-            note.textContent = result.search_note || "Đã tạo bản nháp. Hãy kiểm tra trước khi duyệt.";
+            note.textContent = result.search_note || (result.cached ? "Đã tải bản nháp đã lưu." : "Đã tạo bản nháp. Hãy kiểm tra trước khi duyệt.");
             sourceWrap.replaceChildren(); addSourceList(sourceWrap, JSON.stringify(result.sources || []));
           } catch (error) { note.className = "error"; note.textContent = error.message; }
-          finally { generate.disabled = false; }
-        });
+          finally { button.disabled = false; }
+        };
+        const generate = el("button", "secondary", q.answer_draft ? "↻ Tải bản nháp đã lưu" : "✨ Tạo bản nháp AI");
+        generate.addEventListener("click", () => runGenerate(false, generate));
+        let regenerate = null;
+        if (q.answer_draft) {
+          regenerate = el("button", "secondary", "✨ Tạo lại bằng AI");
+          regenerate.addEventListener("click", () => runGenerate(true, regenerate));
+        }
         const approve = el("button", "", "Duyệt & công khai");
         approve.addEventListener("click", async () => {
           approve.disabled = true; note.textContent = "Đang lưu câu trả lời…";
@@ -280,7 +286,7 @@
           try { await api("/api/questions", { method: "DELETE", body: JSON.stringify({ id: q.id }) }); await Promise.all([loadAdmin(), loadPublic()]); }
           catch (error) { note.className = "error"; note.textContent = error.message; }
         });
-        tools.append(generate, approve, remove);
+        tools.append(generate); if (regenerate) tools.append(regenerate); tools.append(approve, remove);
         card.append(tools, direct);
         list.append(card);
       });
