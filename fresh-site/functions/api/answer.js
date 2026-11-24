@@ -28,6 +28,20 @@ function extractText(value, depth = 0) {
   return "";
 }
 
+function formatLessonContent(raw) {
+  const value = String(raw || "").trim();
+  if (!value) return "(Chưa có nội dung bài học được nhập.)";
+  try {
+    const parsed = JSON.parse(value);
+    if (Array.isArray(parsed)) {
+      return parsed.map((item, index) =>
+        `## ${String(item.title || `Bài học ${index + 1}`)}\n${String(item.content || "(Chưa nhập nội dung.)")}`
+      ).join("\n\n").slice(0, 45000);
+    }
+  } catch {}
+  return value.slice(0, 24000);
+}
+
 async function searchWeb(query, apiKey) {
   if (!apiKey) return [];
   const response = await fetch("https://api.tavily.com/search", {
@@ -86,8 +100,36 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: true });
   }
 
-  if (body.action !== "generate") return json({ error: "Thao tác không hợp lệ." }, 400);
   if (!env.AI) return json({ error: "Chưa cấu hình Workers AI binding AI." }, 500);
+
+  if (body.action === "review") {
+    const candidate = String(body.answer || question.answer_draft || question.answer || "").trim();
+    if (candidate.length < 20) return json({ error: "Cần có bản nháp đủ nội dung trước khi kiểm tra." }, 400);
+    if (candidate.length > 12000) return json({ error: "Nội dung kiểm tra vượt quá giới hạn." }, 413);
+    try {
+      const review = await runModel(env, [
+        { role: "system", content: "Bạn là người rà soát câu trả lời môn Giáo dục Kinh tế và Pháp luật lớp 10. Đánh giá thận trọng, không tự bịa dữ kiện hoặc nguồn. Không sửa hay xuất bản câu trả lời." },
+        { role: "user", content: [
+          "Hãy kiểm tra câu trả lời sau theo 4 tiêu chí: (1) trả lời đúng câu hỏi và đủ các ý; (2) đúng kiến thức KTPL lớp 10 và không có khẳng định thiếu căn cứ; (3) giải thích/ví dụ/biện pháp phù hợp với yêu cầu; (4) diễn đạt rõ ràng, dễ hiểu.",
+          "Trả kết quả theo mẫu ngắn:",
+          "MỨC ĐÁNH GIÁ: Tốt / Cần chỉnh sửa / Chưa đạt",
+          "ĐIỂM THAM KHẢO: x/10",
+          "ĐIỂM TỐT: ...",
+          "ĐIỂM CẦN SỬA: ... (ghi rõ ý thiếu hoặc câu đáng nghi; nếu không có, ghi Không phát hiện)",
+          "ĐỀ XUẤT: ...",
+          "Lưu ý: đây là gợi ý hỗ trợ, người quản trị vẫn phải đối chiếu SGK trước khi duyệt.",
+          "CÂU HỎI: " + question.question,
+          "CÂU TRẢ LỜI CẦN KIỂM TRA:\n" + candidate
+        ].join("\n\n") }
+      ], 900);
+      if (!review || review.length < 20) return json({ error: "AI chưa trả được kết quả kiểm tra. Hãy thử lại." }, 502);
+      return json({ ok: true, review });
+    } catch {
+      return json({ error: "Không thể kiểm tra lúc này. Bản nháp vẫn được giữ nguyên." }, 502);
+    }
+  }
+
+  if (body.action !== "generate") return json({ error: "Thao tác không hợp lệ." }, 400);
 
   // Reuse an existing draft unless the administrator explicitly requests regeneration.
   if (!body.force && question.answer_draft && question.answer_draft.trim().length >= 35) {
@@ -117,7 +159,7 @@ export async function onRequestPost({ request, env }) {
   }
 
   const sourceText = sources.map((s, i) => `[${i + 1}] ${s.title}\nURL: ${s.url}\nTóm tắt: ${s.content}`).join("\n\n");
-  const lessonText = String(lesson?.content || "").slice(0, 24000);
+  const lessonText = formatLessonContent(lesson?.content);
   const system = [
     "Bạn là trợ lý học tập môn Giáo dục Kinh tế và Pháp luật lớp 10.",
     "Trả lời bằng tiếng Việt tự nhiên, rõ ràng, đúng trình độ lớp 10; trả lời trực tiếp và đủ mọi ý được hỏi.",
@@ -134,14 +176,14 @@ export async function onRequestPost({ request, env }) {
   ].join("\n");
 
   const userPrompt = [
-    "BÀI HỌC TRỌNG TÂM: Bài 10 – Lập kế hoạch tài chính cá nhân (KTPL 10, Kết nối tri thức).",
+    "THƯ VIỆN BÀI HỌC KTPL 10 DO QUẢN TRỊ CUNG CẤP (ưu tiên bài phù hợp với câu hỏi):",
     "KHUNG KIẾN THỨC CẦN VẬN DỤNG KHI PHÙ HỢP:",
-    "- Kế hoạch tài chính cá nhân là cách xác định mục tiêu và tổ chức thu nhập, chi tiêu, tiết kiệm để đạt mục tiêu.",
+    "- Nếu câu hỏi thuộc Bài 10: kế hoạch tài chính cá nhân là cách xác định mục tiêu và tổ chức thu nhập, chi tiêu, tiết kiệm để đạt mục tiêu.",
     "- Có thể phân loại mục tiêu theo thời hạn ngắn hạn, trung hạn và dài hạn; phải căn cứ đúng tài liệu bài học được cung cấp khi nêu mốc thời gian.",
     "- Ý nghĩa: hiểu tình hình tài chính, cân đối thu chi, ưu tiên nhu cầu cần thiết, hạn chế lãng phí, hình thành tiết kiệm và chuẩn bị cho mục tiêu tương lai.",
     "- Quy trình cơ bản: xác định mục tiêu và thời hạn; đánh giá tình hình tài chính/nguồn thu/khoản chi; lập quy tắc và kế hoạch cụ thể; thực hiện, theo dõi, ghi chép và điều chỉnh.",
     "- Tình huống chi tiêu: cân nhắc ghi chép thu chi, phân biệt cần thiết/chưa cần thiết, đặt giới hạn phù hợp, dành khoản tiết kiệm khả thi, theo dõi và điều chỉnh.",
-    "NỘI DUNG BÀI HỌC DO QUẢN TRỊ CUNG CẤP:\n" + (lessonText || "(Chưa có nội dung bài học riêng được nhập.)"),
+    "NỘI DUNG THƯ VIỆN BÀI HỌC DO QUẢN TRỊ CUNG CẤP:\n" + lessonText,
     "NGUỒN WEB THAM KHẢO (NẾU CÓ):\n" + (sourceText || "(Không có nguồn web.)"),
     "CÂU HỎI CỦA HỌC SINH:\n" + question.question,
     "YÊU CẦU CUỐI: Trả lời đầy đủ đúng trọng tâm câu hỏi. Không in nhãn phân loại nội bộ. Không bỏ sót ý, không kết thúc giữa chừng."
