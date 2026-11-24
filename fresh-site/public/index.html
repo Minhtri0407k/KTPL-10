@@ -147,7 +147,8 @@
       close.type = "button";
       close.addEventListener("click", () => detail.classList.add("hidden"));
       detail.append(close);
-      detail.append(el("div", "qnum", "CHI TIẾT CÂU HỎI #" + q.id));
+      const questionNumber = publicQuestions.findIndex(item => String(item.id) === String(q.id)) + 1;
+      detail.append(el("div", "qnum", "CHI TIẾT CÂU HỎI #" + (questionNumber > 0 ? questionNumber : 1)));
       detail.append(el("div", "detail-title", q.question));
       const person = el("div", "meta", "Người hỏi: " + (q.name || "Ẩn danh") + " · Lớp: " + (q.class_name || "Chưa cung cấp") + (q.created_at ? " · " + dateLabel(q.created_at) : ""));
       detail.append(person);
@@ -183,9 +184,9 @@
       publicQuestions.forEach((q, index) => {
         const card = el("button", "question-row", "");
         card.type = "button";
-        card.setAttribute("aria-label", "Xem chi tiết câu hỏi " + q.id);
+        card.setAttribute("aria-label", "Xem chi tiết câu hỏi " + (index + 1));
         const top = el("div", "qtop");
-        top.append(el("span", "qnum", "CÂU HỎI #" + q.id));
+        top.append(el("span", "qnum", "CÂU HỎI #" + (index + 1)));
         top.append(el("span", "pill " + (q.answer_status === "approved" ? "ok" : "wait"), q.answer_status === "approved" ? "Đã có trả lời" : "Đang chờ phản hồi"));
         card.append(top);
         card.append(el("h3", "", q.question));
@@ -226,7 +227,8 @@
           class_name: $("student-class").value.trim(),
           question: $("student-question").value.trim()
         })});
-        $("student-question").value = "";
+        // Clear every field only after the server confirms a successful submission.
+        $("ask-form").reset();
         message.className = "success";
         message.textContent = "Đã gửi câu hỏi thành công!";
         await loadPublic();
@@ -374,10 +376,10 @@
       list.replaceChildren();
       const questions = data.questions || [];
       if (!questions.length) { list.append(el("div", "empty", "Chưa có câu hỏi nào.")); return; }
-      questions.forEach((q) => {
+      questions.forEach((q, index) => {
         const card = el("div", "admin-card");
         const top = el("div", "qtop");
-        top.append(el("strong", "", "Câu #" + q.id + " · " + (q.name || "Ẩn danh") + (q.class_name ? " · " + q.class_name : "")));
+        top.append(el("strong", "", "Câu #" + (index + 1) + " · " + (q.name || "Ẩn danh") + (q.class_name ? " · " + q.class_name : "")));
         top.append(el("span", "pill " + (q.answer_status === "approved" ? "ok" : q.answer_status === "draft" ? "wait" : ""), q.answer_status || "pending"));
         card.append(top);
         card.append(el("p", "", q.question));
