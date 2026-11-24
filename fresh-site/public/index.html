@@ -56,6 +56,21 @@
     .detail-close{float:right;padding:7px 11px}
     @media(max-width:520px){.tabs{gap:5px}.tab{font-size:13px;padding:11px 7px}.detail-panel{padding:14px}}
     @media(max-width:760px){.grid{grid-template-columns:1fr}.hero{padding:24px}.top{align-items:flex-start}.split{grid-template-columns:1fr}}
+
+    .scenario-quiz{margin:12px 0 14px;padding:14px;border:1px solid #dce5ff;border-radius:13px;background:#f7f9ff}
+    .scenario-quiz h4{margin:0 0 9px;font-size:15px;color:#243b78}
+    .quiz-options{display:grid;gap:8px}
+    .quiz-option{width:100%;text-align:left;background:#fff;color:#263247;border:1px solid #d9e0ef;padding:10px 12px;border-radius:10px;font-weight:600}
+    .quiz-option:hover:not(:disabled){border-color:#315cf5;background:#f4f6ff}
+    .quiz-option.correct{border-color:#25865a;background:#edf8f1;color:#17613f}
+    .quiz-option.incorrect{border-color:#c24a42;background:#fff2f0;color:#a32c25}
+    .quiz-feedback{margin-top:10px;padding:10px 12px;border-radius:10px;background:#fff;border:1px solid var(--line);font-size:13px}
+    .quiz-feedback.good{background:#edf8f1;border-color:#ccebd8;color:#17613f}
+    .quiz-feedback.retry{background:#fff7e8;border-color:#f1dfb8;color:#79520a}
+    .scenario-explanation{margin-top:12px;padding-top:10px;border-top:1px dashed #d7deed}
+    .scenario-explanation[hidden]{display:none}
+    .quiz-progress{font-size:12px;color:var(--muted);margin:0 0 8px}
+
   </style>
 </head>
 <body>
@@ -647,6 +662,73 @@
     $("admin-refresh").addEventListener("click", async () => {
       try { await Promise.all([loadAdmin(), loadPublic(), loadStats()]); } catch (error) { alert(error.message); }
     });
+
+    // Trắc nghiệm vận dụng: người xem chọn cách xử lý trước khi đọc lời giải.
+    const scenarioQuizData = [
+      {q:"An nên bắt đầu kế hoạch mua balô bằng việc nào?",o:["Mua ngay rồi tính sau","Xác định số tiền cần có và thời hạn","Dùng hết tiền tiêu vặt tuần này"],a:1,why:"Cần xác định mục tiêu cụ thể, số tiền và thời hạn trước khi phân bổ thu – chi."},
+      {q:"Bình nên làm gì khi mục tiêu tiết kiệm khiến bạn thiếu tiền đi lại và học tập?",o:["Tiếp tục tiết kiệm bằng mọi giá","Bỏ toàn bộ mục tiêu","Điều chỉnh mức tiết kiệm hoặc thời hạn"],a:2,why:"Kế hoạch phải phù hợp khả năng và bảo đảm các nhu cầu thiết yếu."},
+      {q:"Chi nên ưu tiên khoản nào khi ngân sách không đủ cho cả hai?",o:["Sách tham khảo cần cho việc học","Món đồ giải trí đang thích","Chọn ngẫu nhiên"],a:0,why:"Nên ưu tiên nhu cầu cần thiết, có thời điểm sử dụng rõ ràng; mong muốn khác có thể trì hoãn."},
+      {q:"Minh muốn biết vì sao tiền tiêu vặt luôn hết sớm. Việc nên làm là gì?",o:["Không cần ghi chép","Ghi lại các khoản thu và chi","Xin thêm tiền ngay"],a:1,why:"Ghi chép giúp nhận diện khoản chi và đối chiếu với ngân sách."},
+      {q:"Huy bị bạn bè rủ mua món đồ không cần thiết. Cách phù hợp nhất?",o:["Mua để không bị khác biệt","Vay tiền để mua","Cân nhắc nhu cầu và ngân sách, có thể từ chối"],a:2,why:"Quyết định chi tiêu nên dựa trên nhu cầu và khả năng tài chính, không theo áp lực số đông."},
+      {q:"Lan phát hiện một nhóm chi tiêu vượt dự kiến. Lan nên làm gì?",o:["Kiểm tra khoản chi và điều chỉnh khoản chưa cần thiết","Cắt giảm tiền ăn và học tập","Bỏ theo dõi ngân sách"],a:0,why:"Cần xác định nguyên nhân, điều chỉnh khoản không thiết yếu và tiếp tục theo dõi."},
+      {q:"Mai nhận được tiền mừng bất ngờ. Cách quản lý hợp lí là gì?",o:["Chi hết ngay","Cân nhắc phân bổ cho tiết kiệm và nhu cầu phù hợp","Cho bạn mượn toàn bộ"],a:1,why:"Khoản thu bất ngờ vẫn nên được phân bổ theo mục tiêu và điều kiện thực tế."},
+      {q:"Nam cần chi thêm cho tài liệu học tập. Nên xử lý kế hoạch ra sao?",o:["Bỏ qua nhu cầu học tập","Vay tiền ngay không cần trao đổi","Cập nhật khoản chi và điều chỉnh mục tiêu mua sắm"],a:2,why:"Nhu cầu học tập chính đáng cần được tính vào kế hoạch; mục tiêu chưa cấp thiết có thể lùi lại."},
+      {q:"Chi phí đi lại của Phúc thay đổi. Phúc nên làm gì?",o:["Giữ nguyên kế hoạch dù không còn phù hợp","Tính lại thu – chi và điều chỉnh kế hoạch","Ngừng ghi chép"],a:1,why:"Kế hoạch tài chính cần linh hoạt theo hoàn cảnh mới."},
+      {q:"Vy đã dùng một phần tiền dự phòng cho đồ học tập bị hỏng. Bước tiếp theo?",o:["Ghi nhận khoản đã dùng và bổ sung dần khi có thể","Coi như kế hoạch thất bại","Cắt mọi khoản thiết yếu để bù ngay"],a:0,why:"Tiền dự phòng được dùng cho phát sinh hợp lí; cần theo dõi số còn lại và bổ sung phù hợp."},
+      {q:"Khoa được rủ vay tiền để mua phụ kiện chưa cần. Lựa chọn phù hợp?",o:["Vay ngay vì đang giảm giá","Vay thêm nếu chưa trả được","Không vay cho món chưa cần và chưa có kế hoạch trả"],a:2,why:"Cần cân nhắc khả năng trả và trách nhiệm tài chính trước khi vay mượn."},
+      {q:"Hai người có mục tiêu và cách chi tiêu khác nhau. Điều nào đúng?",o:["Ai tiết kiệm nhiều hơn luôn đúng","Mỗi người cân đối theo hoàn cảnh, tôn trọng lựa chọn của nhau","Ép người kia theo cách của mình"],a:1,why:"Kế hoạch cần phù hợp mục tiêu và hoàn cảnh riêng, không áp đặt cách chi tiêu của người khác."}
+    ];
+    document.querySelectorAll(".situation-card").forEach((card,index)=>{
+      const body=card.querySelector(".situation-body");
+      const data=scenarioQuizData[index];
+      if(!body||!data)return;
+      const paragraphs=Array.from(body.children);
+      const analysisStart=paragraphs.findIndex(node=>node.textContent.trim().startsWith("Phân tích:"));
+      if(analysisStart<0)return;
+      const explanation=document.createElement("div");
+      explanation.className="scenario-explanation";
+      paragraphs.slice(analysisStart).forEach(node=>explanation.append(node));
+      explanation.hidden=true;
+      const quiz=document.createElement("div");
+      quiz.className="scenario-quiz";
+      const heading=document.createElement("h4");
+      heading.textContent="🧠 Thử chọn cách xử lý";
+      const progress=document.createElement("p");
+      progress.className="quiz-progress";
+      progress.textContent="Chọn một đáp án trước khi xem lời giải.";
+      const question=document.createElement("p");
+      question.textContent=data.q;
+      question.style.fontWeight="750";
+      question.style.margin="0 0 10px";
+      const options=document.createElement("div");
+      options.className="quiz-options";
+      const feedback=document.createElement("div");
+      feedback.className="quiz-feedback";
+      feedback.hidden=true;
+      data.o.forEach((label,i)=>{
+        const option=document.createElement("button");
+        option.type="button";
+        option.className="quiz-option";
+        option.textContent=String.fromCharCode(65+i)+". "+label;
+        option.addEventListener("click",()=>{
+          options.querySelectorAll("button").forEach((b,j)=>{
+            b.disabled=true;
+            if(j===data.a)b.classList.add("correct");
+            else if(j===i)b.classList.add("incorrect");
+          });
+          feedback.hidden=false;
+          feedback.className="quiz-feedback "+(i===data.a?"good":"retry");
+          feedback.textContent=(i===data.a?"✓ Chính xác! ":"Chưa đúng rồi. Đáp án đúng là "+String.fromCharCode(65+data.a)+". ")+data.why;
+          progress.textContent="Đã hoàn thành câu hỏi tình huống này.";
+          explanation.hidden=false;
+        });
+        options.append(option);
+      });
+      quiz.append(heading,progress,question,options,feedback);
+      body.insertBefore(quiz,body.children[1]||null);
+      body.append(explanation);
+    });
+
     loadPublic();
   </script>
 </body>
